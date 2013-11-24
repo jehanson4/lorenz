@@ -7,33 +7,22 @@ attractor
 Project organization
 --------------------
 
-This is organized as a sequence of sub-projects, a/k/a "labs", representing
+The code is organized as a sequence of sub-projects, a/k/a "labs", representing
 stages in the development of the final app. Each lab builds on the previous
 ones, but is fully self-contained. All the code for a given lab resides in a
 source directory labeled with the lab's number. The finished project resides
 in its own source directory, named "final". See "Outline of the Labs" below
 for a summary of what each lab covers. 
 
-Technical information
----------------------
-
-The executable app is called "LorenzLab", and is an ordinary Java application.
+The executable is called "LorenzLab", and runs as an ordinary Java application.
+By far the easiest option is to launch it from within Eclipse.
 
 This project is both a git repository and an Eclipse Plug-In Project.
-I have kept dependencies to a minimum.
-
-
-Other relevant things of note:
-
-* Java SE 1.6
-* GUI library is SWT.
-
-   
 
 Outline of the Labs
 -------------------
 
-1. display an SWT window with a sample message in it. No content yet.
+1. Display an SWT window showing a canvas with a sample message drawn on it.
 
 2. display data points that are generated programmatically. This requires transforming
 from 3-D double-valued data coordinates to the 2-D integer-valued coordinates used by
