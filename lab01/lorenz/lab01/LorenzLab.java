@@ -27,7 +27,7 @@ public class LorenzLab implements PaintListener {
 
 		Display display = new Display();
 		Shell shell = new Shell(display, SWT.SHELL_TRIM);
-		shell.setText("Lorenz Lab 1");
+		shell.setText(LorenzLab.TITLE);
 		shell.setSize(300, 300);
 		
 		LorenzLab app = new LorenzLab();
@@ -45,7 +45,9 @@ public class LorenzLab implements PaintListener {
 	// Variables
 	// ==========================================
 	
-	Canvas canvas;
+	public static final String TITLE = "Lorenz Lab v0.1";
+
+	private Canvas canvas;
 	
 	// ==========================================
 	// Creation
@@ -69,12 +71,12 @@ public class LorenzLab implements PaintListener {
 	@Override
 	public void paintControl(PaintEvent e) {
 		GC gc = e.gc;
-		String msg = "Lorenz Lab 1";
+		String msg = LorenzLab.TITLE;
 		Rectangle rect = canvas.getClientArea();
 		Point msgSize  = gc.textExtent(msg);
 		int x = (rect.width - msgSize.x)/2;
 		int y = (rect.height - msgSize.y)/2;
-		gc.drawText("Lorenz Lab 01", x, y);
+		gc.drawText(msg, x, y);
 	}
 	
 }
