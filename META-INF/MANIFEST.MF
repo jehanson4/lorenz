@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: lorenz
+Bundle-SymbolicName: lorenz
+Bundle-Version: 1.0.0.qualifier
+Export-Package: lorenz.lab03
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.eclipse.swt,
+ org.eclipse.swt.events,
+ org.eclipse.swt.graphics,
+ org.eclipse.swt.layout,
+ org.eclipse.swt.widgets
