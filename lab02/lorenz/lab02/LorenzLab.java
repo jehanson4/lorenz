@@ -1,12 +1,12 @@
 package lorenz.lab02;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Shell;
  *
  * @author jehanson4
  */
-public class LorenzLab implements PaintListener {
+public class LorenzLab {
 
 	// ==========================================
 	// main
@@ -40,13 +40,37 @@ public class LorenzLab implements PaintListener {
 		display.dispose();
 	}
 
+	// ===========================
+	// Inner classes
+	// ===========================
+
+	private class CListener implements ControlListener, PaintListener {
+
+		@Override
+		public void controlMoved(ControlEvent e) {}
+
+		@Override
+		public void controlResized(ControlEvent e) {
+			gf.initialize(dataBounds, canvas.getClientArea());
+		}
+
+		@Override
+		public void paintControl(PaintEvent e) {
+			// TODO: draw a nice cube.
+			// GC gc = e.gc;
+		}	
+	}
+	
+
 	// ==========================================
 	// Variables
 	// ==========================================
 	
 	public static final String TITLE = "Lorenz Lab v0.2";
 	
-	private DataCanvas canvas;
+	private Canvas canvas;
+	private GraphicsTransform gf;
+	private DataBox dataBounds;
 	
 	// ==========================================
 	// Creation
@@ -54,7 +78,9 @@ public class LorenzLab implements PaintListener {
 
 	public LorenzLab() {
 		super();
-		canvas = null;
+		this.canvas = null;
+		this.gf = new NormalTransform();
+		this.dataBounds = DataBox.cubeAt(DataPoint.ORIGIN, 1.0);
 	}
 
 	// ==========================================
@@ -63,19 +89,11 @@ public class LorenzLab implements PaintListener {
 
 	public void buildComponents(Composite parent) {
 		parent.setLayout(new FillLayout());
-		canvas = new DataCanvas(parent, SWT.NONE);
-		canvas.addPaintListener(this);
+		this.canvas = new Canvas(parent, SWT.NONE);
+		
+		CListener clistener = new CListener();
+		canvas.addControlListener(clistener);
+		canvas.addPaintListener(clistener);
 	}
 
-	@Override
-	public void paintControl(PaintEvent e) {
-		GC gc = e.gc;
-		String msg = TITLE;
-		Rectangle rect = canvas.getClientArea();
-		Point msgSize  = gc.textExtent(msg);
-		int x = (rect.width - msgSize.x)/2;
-		int y = (rect.height - msgSize.y)/2;
-		gc.drawText(msg, x, y);
-	}
-	
 }
