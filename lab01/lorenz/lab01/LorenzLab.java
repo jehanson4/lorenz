@@ -1,5 +1,11 @@
 package lorenz.lab01;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -14,25 +20,38 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * The main app.
- *
+ * 
  * @author jehanson4
  */
 public class LorenzLab implements PaintListener {
+
+	private static String clsName = LorenzLab.class.getName();
+	private static Logger logger = Logger.getLogger(clsName);
 
 	// ==========================================
 	// main
 	// ==========================================
 
-	public static void main(String[] args) {		
+	public static void main(String[] args) {
+
+		try {
+			InputStream loggerStream = new FileInputStream(
+					"lab01/logging.properties");
+			LogManager.getLogManager().readConfiguration(loggerStream);
+		} catch (Exception e) {
+			System.out
+					.println("Ignoring problem with logger configuration: "
+							+ e);
+		}
 
 		Display display = new Display();
 		Shell shell = new Shell(display, SWT.SHELL_TRIM);
-		shell.setText(LorenzLab.TITLE);
+		shell.setText(LorenzLab.class.getSimpleName());
 		shell.setSize(300, 300);
-		
+
 		LorenzLab app = new LorenzLab();
 		app.buildComponents(shell);
-		
+
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
@@ -44,11 +63,11 @@ public class LorenzLab implements PaintListener {
 	// ==========================================
 	// Variables
 	// ==========================================
-	
+
 	public static final String TITLE = "Lorenz Lab v0.1";
 
 	private Canvas canvas;
-	
+
 	// ==========================================
 	// Creation
 	// ==========================================
@@ -70,13 +89,17 @@ public class LorenzLab implements PaintListener {
 
 	@Override
 	public void paintControl(PaintEvent e) {
+		final String mtdName = "paintControl";
 		GC gc = e.gc;
 		String msg = LorenzLab.TITLE;
 		Rectangle rect = canvas.getClientArea();
-		Point msgSize  = gc.textExtent(msg);
-		int x = (rect.width - msgSize.x)/2;
-		int y = (rect.height - msgSize.y)/2;
+		Point msgSize = gc.textExtent(msg);
+		int x = (rect.width - msgSize.x) / 2;
+		int y = (rect.height - msgSize.y) / 2;
+		if (logger.isLoggable(Level.FINE))
+			logger.logp(Level.FINE, clsName, mtdName, "drawing label at (" + x
+					+ ", " + y + ")");
 		gc.drawText(msg, x, y);
 	}
-	
+
 }
