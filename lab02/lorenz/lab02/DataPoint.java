@@ -25,7 +25,13 @@ public class DataPoint {
 	// ============================
 
 	public DataPoint(double x, double y, double z) {
-		assert (isNumber(x) && isNumber(y) && isNumber(z));
+		if (!isNumber(x))
+			throw new IllegalArgumentException("x must be a finite number");
+		if (!isNumber(y))
+			throw new IllegalArgumentException("y must be a finite number");
+		if (!isNumber(z))
+			throw new IllegalArgumentException("z must be a finite number");
+		
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -45,6 +51,14 @@ public class DataPoint {
 
 	public double getZ() {
 		return z;
+	}
+
+	public String toString() {
+		return makeTupleString(x,y,z);
+	}
+	
+	public static String makeTupleString(double x, double y, double z) {
+		return "(" + x + ", " + y + ", " + z + ")";
 	}
 
 	// =============================
