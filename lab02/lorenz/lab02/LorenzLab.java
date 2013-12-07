@@ -6,7 +6,6 @@ import java.util.logging.LogManager;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 

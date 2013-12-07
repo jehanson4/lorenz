@@ -2,6 +2,7 @@ package lorenz.lab02;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.swt.SWT;
@@ -14,7 +15,6 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 
 /**
  * GUI stuff for viewing what's going on.
@@ -44,6 +44,10 @@ public class Viewer {
 
 		@Override
 		public void paintControl(PaintEvent e) {
+			final String mtdName = "paintControl";
+			if (logger.isLoggable(Level.FINE))
+				logger.logp(Level.FINE,  clsName,  mtdName,  "redrawing");
+			
 			final GC gc = e.gc;
 			gc.setBackground(pointColor);
 			for (DataPoint p : samplePoints)

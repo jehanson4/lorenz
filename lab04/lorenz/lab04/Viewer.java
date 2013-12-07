@@ -92,7 +92,6 @@ public class Viewer implements DataSourceListener {
 	private Color pointColor;
 	private volatile boolean clearRequested;
 	private final LinkedList<DataSourceEvent> eventsToDraw;
-	private volatile double latestEventTimestamp;
 	private double maxHistory;
 
 	// ==================================
@@ -106,7 +105,6 @@ public class Viewer implements DataSourceListener {
 		this.pointColor = null;
 		this.clearRequested = false;
 		this.eventsToDraw = new LinkedList<DataSourceEvent>();
-		this.latestEventTimestamp = 0;
 		this.maxHistory = 10000.0;
 	}
 
@@ -158,7 +156,6 @@ public class Viewer implements DataSourceListener {
 	@Override
 	public void dataPointGenerated(DataSourceEvent e) {
 		synchronized (eventsToDraw) {
-			latestEventTimestamp = e.getTimestamp();
 			eventsToDraw.addLast(e);
 			double oldestToKeep = e.getTimestamp() - maxHistory;
 			while (!eventsToDraw.isEmpty()

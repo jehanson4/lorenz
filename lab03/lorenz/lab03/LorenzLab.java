@@ -3,14 +3,9 @@ package lorenz.lab03;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -20,9 +15,6 @@ import org.eclipse.swt.widgets.Shell;
  * @author jehanson4
  */
 public class LorenzLab {
-
-	private static final String clsName = LorenzLab.class.getName();
-	private static final Logger logger = Logger.getLogger(clsName);
 
 	// ==========================================
 	// main

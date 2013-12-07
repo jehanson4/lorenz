@@ -10,12 +10,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -96,6 +94,8 @@ public class LorenzLab implements PaintListener {
 		int x = rect.x + rect.width / 2;
 		int y = rect.y + rect.height  / 2;
 		String msg = "(" + x + ", " + y + ")";
+		if (logger.isLoggable(Level.FINE))
+			logger.logp(Level.FINE,  clsName,  mtdName,  "redrawing");
 		gc.drawText(msg, x+4, y+4);
 		gc.drawLine(x, y-8, x, y+8);
 		gc.drawLine(x-8, y, x+8, y);
