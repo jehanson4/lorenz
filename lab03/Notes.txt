@@ -1,0 +1,16 @@
+Lorenz Lab -- Notes for Lab #3 -- Data Plumbing
+
+This adds basic support for animating the Lorenz system's behavior. It uses an
+event-based model in which data points are generated on one execution thread and
+delivered as "events" to a "listener", which then makes them available for display
+in the GUI.
+
+The important new features are:
+
+* Abstract class DataSource and its helpers DataSourceEvent and DataSourceListener
+
+* RandomWalker: a DataSource implementation that generates data points according
+  to a random walk within a 3-d region
+
+* Enhancements to Viewer. It's a DataSourceListener now, and it contains a cache of
+  data points to be displayed whenever appropriate.
