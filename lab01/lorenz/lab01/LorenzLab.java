@@ -15,6 +15,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -48,10 +49,11 @@ public class LorenzLab implements PaintListener {
 		Shell shell = new Shell(display, SWT.SHELL_TRIM);
 		shell.setText(LorenzLab.class.getSimpleName());
 		shell.setSize(300, 300);
-
-		LorenzLab app = new LorenzLab();
-		app.buildComponents(shell);
-
+		shell.setLayout(new FillLayout());
+		
+		LorenzLab llab = new LorenzLab();
+		llab.buildControls(shell);
+		
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
@@ -81,8 +83,7 @@ public class LorenzLab implements PaintListener {
 	// Operation
 	// ==========================================
 
-	public void buildComponents(Composite parent) {
-		parent.setLayout(new FillLayout());
+	public void buildControls(Composite parent) {
 		canvas = new Canvas(parent, SWT.NONE);
 		canvas.addPaintListener(this);
 	}
@@ -91,15 +92,13 @@ public class LorenzLab implements PaintListener {
 	public void paintControl(PaintEvent e) {
 		final String mtdName = "paintControl";
 		GC gc = e.gc;
-		String msg = LorenzLab.TITLE;
 		Rectangle rect = canvas.getClientArea();
-		Point msgSize = gc.textExtent(msg);
-		int x = (rect.width - msgSize.x) / 2;
-		int y = (rect.height - msgSize.y) / 2;
-		if (logger.isLoggable(Level.FINE))
-			logger.logp(Level.FINE, clsName, mtdName, "drawing label at (" + x
-					+ ", " + y + ")");
-		gc.drawText(msg, x, y);
+		int x = rect.x + rect.width / 2;
+		int y = rect.y + rect.height  / 2;
+		String msg = "(" + x + ", " + y + ")";
+		gc.drawText(msg, x+4, y+4);
+		gc.drawLine(x, y-8, x, y+8);
+		gc.drawLine(x-8, y, x+8, y);
 	}
 
 }

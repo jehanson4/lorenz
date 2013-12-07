@@ -1,0 +1,5 @@
+LorenzLab -- Notes for Lab #1: Getting ready
+
+This puts up a GUI window with a simple message in the center. It has boilerplate
+code for running an SWT app; a PaintListener to redraw the message whenever 
+necessary, and logger configuration stuff.
