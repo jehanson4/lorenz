@@ -1,0 +1,5 @@
+LorenzLab -- Notes for Lab #4 -- Animation
+
+This lab adds rudimentary animation along with  controls to start and stop it.
+
+* Controller
