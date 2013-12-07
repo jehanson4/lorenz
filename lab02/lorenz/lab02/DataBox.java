@@ -75,7 +75,7 @@ public class DataBox {
 
 	public String toString() {
 
-		return "[" + DataPoint.makeTupleString(xMin, yMin, zMin) + ", "
-				+ DataPoint.makeTupleString(xMax, yMax, zMax) + "]";
+		return "{ min=" + DataPoint.makeTupleString(xMin, yMin, zMin) + ", max="
+				+ DataPoint.makeTupleString(xMax, yMax, zMax) + "}";
 	}
 }

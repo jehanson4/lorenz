@@ -47,10 +47,10 @@ public class SimpleGraphicsTransform {
 		double z1 = dataBounds.getZMax();
 
 		xFactor = (a1 - a0) / (x1 - x0);
-		xOffset = a0 - xFactor*x0;
+		xOffset = a0 - xFactor * x0;
 
 		zFactor = (b1 - b0) / (z0 - z1);
-		zOffset = b0 - zFactor*z1;
+		zOffset = b0 - zFactor * z1;
 	}
 
 	public Point dataToGraphics(DataPoint dataPt) {
@@ -60,7 +60,8 @@ public class SimpleGraphicsTransform {
 		int py = (int) (dataPt.getZ() * zFactor + zOffset);
 		Point p = new Point(px, py);
 
-		logger.logp(Level.INFO, clsName, mtdName, "" + dataPt + " => " + p);
+		if (logger.isLoggable(Level.FINER))
+			logger.logp(Level.FINER, clsName, mtdName, "" + dataPt + " => " + p);
 		return p;
 	}
 

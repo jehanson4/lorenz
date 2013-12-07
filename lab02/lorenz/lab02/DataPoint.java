@@ -58,7 +58,7 @@ public class DataPoint {
 	}
 	
 	public static String makeTupleString(double x, double y, double z) {
-		return "(" + x + ", " + y + ", " + z + ")";
+		return "[" + x + ", " + y + ", " + z + "]";
 	}
 
 	// =============================

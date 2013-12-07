@@ -1,0 +1,11 @@
+LorenzLab -- Notes for Lab #2 -- Data Points and Transforms
+
+Building on Lab #1, this defines some of the classes used for representing and
+displaying the Lorenz system's behavior. It adds the following main features:
+
+* DataPoint: represents a point in the Lorenz system's phase space
+
+* SimpleDataTransform: converts DataPoints into pixel locations in a very simple
+  way. Adjusts itself as necessary in response to changes in the the window size.
+
+* Viewer: a holder for the stuff needed to view the system's evolution.
