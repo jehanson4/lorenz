@@ -98,7 +98,7 @@ public class Viewer implements DataSourceListener {
 
 	public Viewer() {
 		this.transform = new SimpleGraphicsTransform();
-		this.dataBounds = new DataBox(DataPoint.ORIGIN, 1.0);
+		this.dataBounds = new DataBox(DataPoint.ORIGIN, 2.0);
 		this.canvas = null;
 		this.pointColor = null;
 		this.clearRequested = false;
