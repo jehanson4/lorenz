@@ -1,5 +1,8 @@
 LorenzLab -- Notes for Lab #4 -- Animation
 
-This lab adds rudimentary animation along with  controls to start and stop it.
+This lab adds rudimentary animation. Data points are created on a separate
+thread. The UI has buttons to start and stop it. New class is:
 
-* Controller
+* Controller: UI widgets, and the logic behind them, to start and stop the
+  generation of points; to reset (i.e., discard all points) and to generate
+  one point at a time.  
