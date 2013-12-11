@@ -81,7 +81,7 @@ public class RandomWalker extends DataSource {
 			logger.logp(Level.FINER, clsName, mtdName, "entering");
 		currentX += stepSize * (2 * rng.nextDouble() - 1);
 		currentY += stepSize * (2 * rng.nextDouble() - 1);
-		currentZ += stepSize * (2f * rng.nextDouble() - 1);
+		currentZ += stepSize * (2 * rng.nextDouble() - 1);
 		currentT += stepTime;
 
 		currentX = bounce(currentX, bounds.getXMin(), bounds.getXMax());
@@ -114,3 +114,4 @@ public class RandomWalker extends DataSource {
 			return v;
 	}
 }
+

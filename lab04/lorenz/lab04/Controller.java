@@ -67,7 +67,7 @@ public class Controller {
 
 	public Controller(DataSource dataSource) {
 		this.dataSource = dataSource;
-		this.stepMillis = 0;
+		this.stepMillis = 1;
 	}
 
 	// ======================================

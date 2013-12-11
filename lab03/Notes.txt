@@ -1,11 +1,7 @@
 Lorenz Lab -- Notes for Lab #3 -- Data Plumbing
 
-This adds basic support for animating the Lorenz system's behavior. It uses an
-event-based model in which data points are generated on one execution thread and
-delivered as "events" to a "listener", which then makes them available for display
-in the GUI.
-
-The important new features are:
+This adds basic plumbing classes for separating the code that generates data
+from the code that displays it. The important new features are:
 
 * Abstract class DataSource and its helpers DataSourceEvent and DataSourceListener
 
