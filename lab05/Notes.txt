@@ -1,0 +1,11 @@
+Lorenz Lab -- Notes to Lab #5 -- The Lorenz Equations
+
+In this lab we finally get to see the Lorenz system. It is used as the data source
+instead of RandomWalker. (RandomWalker is kept around for use in subsequent labs.)
+Important new features:
+
+* ODESystem: interface used to represent systems of ordinary differential equations
+
+* LorenzSystem: an ODESystem that embodies the Lorenz equations
+
+* RungeKuttaIntegrator: generates data points by numerically integrating an ODESystem 
