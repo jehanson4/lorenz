@@ -30,7 +30,9 @@ public class Controller {
 
 		@Override
 		public void run() {
-			// logging
+			final String mtdName = "RunLoop.run";
+			if (logger.isLoggable(Level.FINE))
+				logger.logp(Level.FINE, clsName, mtdName, "entering");
 			while (runnerThread == Thread.currentThread()) {
 				dataSource.step();
 				if (stepMillis > 0) {
@@ -43,7 +45,8 @@ public class Controller {
 					}
 				}
 			}
-			// logging
+			if (logger.isLoggable(Level.FINE))
+				logger.logp(Level.FINE, clsName, mtdName, "exiting");
 		}
 
 	}
@@ -148,6 +151,9 @@ public class Controller {
 	}
 
 	public void start() {
+		final String mtdName = "start";
+		if (logger.isLoggable(Level.FINE))
+			logger.logp(Level.FINE, clsName,  mtdName, "starting");
 		synchronized (runnerGuard) {
 			if (runnerThread == null) {
 				runnerThread = new Thread(new RunLoop());
@@ -157,6 +163,9 @@ public class Controller {
 	}
 
 	public void stop() {
+		final String mtdName = "stop";
+		if (logger.isLoggable(Level.FINE))
+			logger.logp(Level.FINE, clsName,  mtdName, "stopping");
 		synchronized (runnerGuard) {
 			runnerThread = null;
 		}
@@ -191,8 +200,7 @@ public class Controller {
 			image = new Image(display, is);
 			is.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// Ignore
 		}
 		return image;
 	}

@@ -71,6 +71,7 @@ public class LorenzLab {
 		super();
 		this.dataSource = new RandomWalker();
 		this.viewer = new Viewer();
+		viewer.setDataBounds(dataSource.getDataBoundsHint());
 		this.controller = new Controller(dataSource);
 
 		dataSource.addDataSourceListener(viewer);
