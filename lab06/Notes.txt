@@ -1,0 +1,9 @@
+Lorenz Lab -- Notes for Lab #6 -- Multiple Timeseries
+
+This lab adds support for multiple independent timeseries.
+
+This enables it to show the sensitive dependence on initial conditions
+characteristic of the Lorenz system and other chaotic systems. This
+version of the LorenzLab app has two independent timeseries from the
+same Lorenz system, which differ only by a tiny amount in the
+starting point.
