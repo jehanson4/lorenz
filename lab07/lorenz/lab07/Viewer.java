@@ -56,14 +56,17 @@ public class Viewer {
 			ds.addDataSourceListener(this);
 		}
 
+		@Override
 		public String getName() {
 			return ds.getName();
 		}
 		
+		@Override
 		public Color getColor() {
 			return pointColor;
 		}
 		
+		@Override
 		public void setColor(Color c) {
 			pointColor = c;
 		}
@@ -88,7 +91,7 @@ public class Viewer {
 			redraw();
 		}
 
-		void draw(GC gc, SimpleGraphicsTransform transform) {
+		private void draw(GC gc, SimpleGraphicsTransform transform) {
 			final String mtdName = "draw";
 
 			// Color bg = gc.getBackground();

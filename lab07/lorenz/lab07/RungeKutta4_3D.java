@@ -1,6 +1,7 @@
 package lorenz.lab07;
 
 
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,12 +23,13 @@ public class RungeKutta4_3D extends DataSource {
 	// Variables
 	// =============================================
 
-	private ODESystem_3D odeSystem;
+	private static final double DEFAULT_TIME_STEP = 0.001;
+	
+	private final ODESystem_3D odeSystem;
 	private DataPoint initialState;
+	private double timeStep;
 	private double[] currP;
-	// private double[] currPDot;
 	private double currT;	
-	private double deltaT;
 	
 	// =============================================
 	// Creation
@@ -53,7 +55,7 @@ public class RungeKutta4_3D extends DataSource {
 
 		this.odeSystem = odeSystem;
 		this.initialState = initialState;
-		this.deltaT = 0.001;
+		this.timeStep = DEFAULT_TIME_STEP;
 		this.currP = new double[3];
 		
 		// (OK to call this in ctor b/c it's final)
@@ -65,13 +67,36 @@ public class RungeKutta4_3D extends DataSource {
 	// Operation
 	// =============================================
 
+	
 	/**
 	 * Returns a defensive copy of this walker's internal data bounds.
 	 */
+	@Override
 	public DataBox getDataBoundsHint() {
 		return odeSystem.getDataBoundsHint();
 	}
 
+	@Override
+	public void setParameters(Properties params) {
+		super.setParameters(params);
+		// TODO: timeStep, odeSystem, initialState
+	}
+
+	@Override
+	public Properties getParameterDefaults() {
+		Properties params = super.getParameterDefaults();
+		// TODO: timeStep, odeSystem, initialState
+		return params;
+	}
+
+	@Override
+	public Properties getParameters() {
+		Properties params = super.getParameters();
+		// TODO: timeStep, odeSystem, initialState
+		return params;
+	}
+
+	@Override
 	public DataPoint getCurrentPoint() {
 		return new DataPoint(currP[0], currP[1], currP[2]);
 	}
@@ -97,15 +122,15 @@ public class RungeKutta4_3D extends DataSource {
 			logger.logp(Level.FINER, clsName, mtdName, "entering");
 		
 		// temp variables, put into class?
-		double deltaT_2 = deltaT * 0.5;
-		double deltaT_6 = deltaT/6.0; 
+		double deltaT_2 = timeStep * 0.5;
+		double deltaT_6 = timeStep/6.0; 
 		double[] tmpP = new double[3];		// temp variable: position estimates 
 		double[] tmpPDot1 = new double[3];	// temp variable: derivatives at currP
 		double[] tmpPDot2 = new double[3];	// temp variable: derivatives estimates
 		double[] tmpPDot3 = new double[3];	// temp variable: a derivatives estimate 
 
 		final double nextT_2 = currT+deltaT_2;	// half-way to nextT
-		final double nextT = currT+deltaT;
+		final double nextT = currT+timeStep;
 		
 		// 1. Take derivatives at currP, use them to calculate 1st estimate of "nextP_2"
 		// (i.e., position at nextT_2)
@@ -123,7 +148,7 @@ public class RungeKutta4_3D extends DataSource {
 		// 1st estimate of nextP. Also, fiddle with tmpPDot3 in prep for step 4.
 		odeSystem.takeDerivatives(nextT_2, tmpP, tmpPDot3);
 		for (int i=0; i<3; i++) {
-			tmpP[i] = currP[i] + deltaT * tmpPDot3[i];
+			tmpP[i] = currP[i] + timeStep * tmpPDot3[i];
 			tmpPDot3[i] += tmpPDot2[i];
 		}
 		

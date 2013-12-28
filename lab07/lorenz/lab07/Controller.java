@@ -1,7 +1,5 @@
 package lorenz.lab07;
 
-import java.util.logging.Logger;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -9,13 +7,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 public class Controller {
-
-	private static final String clsName = Controller.class.getName();
-	private static final Logger logger = Logger.getLogger(clsName);
-
-	// ======================================
-	// Inner classes
-	// ======================================
 
 	// ======================================
 	// Variables

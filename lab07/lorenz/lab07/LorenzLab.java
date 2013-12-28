@@ -70,7 +70,7 @@ public class LorenzLab {
 	public LorenzLab() {
 		super();
 
-		LorenzSystem sys = new LorenzSystem();
+		ODESystem_3D sys = new LorenzSystem();
 		DataPoint pt1 = sys.getInitialStateHint();
 		DataSource ds1 = new RungeKutta4_3D("ds1", sys, pt1);
 		DataPoint pt2 = new DataPoint(pt1.getX()+1E-5, pt1.getY(), pt1.getZ());

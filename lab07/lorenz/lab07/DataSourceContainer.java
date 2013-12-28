@@ -42,10 +42,12 @@ public class DataSourceContainer extends AbstractMap<String, DataSource> impleme
 		return currentT;
 	}
 
+	@Override
 	public boolean isEmpty() {
 		return sources.isEmpty();
 	}
 
+	@Override
 	public int size() {
 		return sources.size();
 	}
@@ -70,6 +72,7 @@ public class DataSourceContainer extends AbstractMap<String, DataSource> impleme
 		return sources.remove(name);
 	}
 
+	@Override
 	public void clear() {
 		sources.clear();
 	}

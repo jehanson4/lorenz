@@ -1,5 +1,7 @@
 package lorenz.lab07;
 
+import java.util.Properties;
+
 /**
  * System of ordinary differential equations with 3 degrees of freedom.
  * 
@@ -28,4 +30,28 @@ public interface ODESystem_3D {
 	 *            Must be a non-null array of length >= 3.
 	 */
 	public void takeDerivatives(double t, double[] p, double[] dpdt);
+
+	/**
+	 * Attempts to set the receiver's parameters from the given Properties
+	 * object. Unrecognized parameter names and illegal values are ignored.
+	 * Parameters not found in the given Properties object are left unchanged.
+	 */
+	public abstract void setParameters(Properties params);
+
+	/**
+	 * Returns the receiver's default parameters in the form of a Properties
+	 * object.
+	 * 
+	 * @return the default parameters. Not null, but may be empty.
+	 */
+	public abstract Properties getParameterDefaults();
+
+	/**
+	 * Returns the receiver's current parameters in the form of a Properties
+	 * object.
+	 * 
+	 * @return the current parameters. Not null, but may be empty.
+	 */
+	public Properties getParameters();
+	
 }

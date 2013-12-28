@@ -1,5 +1,6 @@
 package lorenz.lab07;
 
+import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +23,7 @@ public class RandomWalker extends DataSource {
 	private DataBox bounds;
 
 	private double stepSize;
-	private double stepTime;
+	private double timeStep;
 
 	private double currentX;
 	private double currentY;
@@ -55,7 +56,7 @@ public class RandomWalker extends DataSource {
 		this.bounds = new DataBox(initialState, 2.0);
 		this.rng = new Random();
 		this.stepSize = 0.005;
-		this.stepTime = 1.0;
+		this.timeStep = 1.0;
 		this.currentX = initialState.getX();
 		this.currentY = initialState.getY();
 		this.currentZ = initialState.getZ();
@@ -72,18 +73,42 @@ public class RandomWalker extends DataSource {
 	/**
 	 * Returns a defensive copy of this walker's internal data bounds.
 	 */
+	@Override
 	public DataBox getDataBoundsHint() {
 		return new DataBox(bounds);
 	}
 
+	@Override
 	public DataPoint getCurrentPoint() {
 		return new DataPoint(currentX, currentY, currentZ);
 	}
 
+	@Override
 	public double getCurrentTime() {
 		return currentT;
 	}
 
+	@Override
+	public void setParameters(Properties params) {
+		super.setParameters(params);
+		// TODO: timeStep, stepSize, initialState
+	}
+
+	@Override
+	public Properties getParameterDefaults() {
+		Properties params = super.getParameterDefaults();
+		// TODO: timeStep, stepSize, initialState
+		return params;
+	}
+
+	@Override
+	public Properties getParameters() {
+		Properties params = super.getParameters();
+		// TODO: timeStep, stepSize, initialState
+		return params;
+	}
+
+	
 	@Override
 	public void doStep() {
 		final String mtdName = "doStep";
@@ -92,7 +117,7 @@ public class RandomWalker extends DataSource {
 		currentX += stepSize * (2 * rng.nextDouble() - 1);
 		currentY += stepSize * (2 * rng.nextDouble() - 1);
 		currentZ += stepSize * (2 * rng.nextDouble() - 1);
-		currentT += stepTime;
+		currentT += timeStep;
 
 		currentX = bounce(currentX, bounds.getXMin(), bounds.getXMax());
 		currentY = bounce(currentY, bounds.getYMin(), bounds.getYMax());

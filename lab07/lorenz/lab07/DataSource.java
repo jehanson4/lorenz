@@ -2,20 +2,25 @@ package lorenz.lab07;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * 
+ * @author jehanson
+ */
 public abstract class DataSource implements Steppable {
 
 	private static final String clsName = DataSource.class.getName();
 	private static final Logger logger = Logger.getLogger(clsName);
-	
+
 	// ===================================
 	// Variables
 	// ===================================
 
 	private static int defaultNameCounter = 0;
-	
+
 	private String name;
 	private final List<DataSourceListener> dsListeners;
 
@@ -37,15 +42,42 @@ public abstract class DataSource implements Steppable {
 	public String getName() {
 		return name;
 	}
-	
-	public void setName(String name) {
-		if (name == null)
-			throw new IllegalArgumentException("name cannot be null");
-		this.name = name;
+
+	/**
+	 * Attempts to set the receiver's parameters from the given Properties
+	 * object. Unrecognized parameter names and illegal values are ignored.
+	 * Parameters not found in the given Properties object are left unchanged.
+	 * <p>
+	 * For override. This returns does nothing.
+	 */
+	public void setParameters(Properties params) {}
+
+	/**
+	 * Returns the receiver's default parameters in the form of a Properties
+	 * object.
+	 * <p>
+	 * For override. This returns empty Properties object.
+	 * 
+	 * @return the default parameters. Not null, but may be empty.
+	 */
+	public Properties getParameterDefaults() {
+		return new Properties();
 	}
-	
+
+	/**
+	 * Returns the receiver's current parameters in the form of a Properties
+	 * object.
+	 * <p>
+	 * For override. This returns empty Properties object.
+	 * 
+	 * @return the current parameters. Not null, but may be empty.
+	 */
+	public Properties getParameters() {
+		return new Properties();
+	}
+
 	public abstract DataBox getDataBoundsHint();
-	
+
 	public abstract DataPoint getCurrentPoint();
 
 	@Override
@@ -58,8 +90,8 @@ public abstract class DataSource implements Steppable {
 	@Override
 	public void reset() {
 		doReset();
-		DataSourceEvent event = new DataSourceEvent(this, getCurrentPoint(),
-				getCurrentTime());
+		DataSourceEvent event =
+				new DataSourceEvent(this, getCurrentPoint(), getCurrentTime());
 		for (DataSourceListener dsl : dsListeners) {
 			dsl.dataSourceReset(event);
 		}
@@ -69,8 +101,8 @@ public abstract class DataSource implements Steppable {
 	public void step() {
 		final String mtdName = "step";
 		doStep();
-		DataSourceEvent event = new DataSourceEvent(this, getCurrentPoint(),
-				getCurrentTime());
+		DataSourceEvent event =
+				new DataSourceEvent(this, getCurrentPoint(), getCurrentTime());
 		if (logger.isLoggable(Level.FINE)) {
 			logger.logp(Level.FINE, clsName, mtdName, "event=" + event);
 		}
@@ -88,7 +120,7 @@ public abstract class DataSource implements Steppable {
 	public void removeDataSourceListener(DataSourceListener listener) {
 		dsListeners.remove(listener);
 	}
-	
+
 	protected static String getDefaultName() {
 		return DataSource.class.getSimpleName() + defaultNameCounter++;
 	}
