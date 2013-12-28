@@ -96,7 +96,7 @@ public class Viewer {
 	}
 
 	public void buildControls(Composite parent) {
-		canvas = new Canvas(parent, SWT.BORDER | SWT.NO_BACKGROUND);
+		canvas = new Canvas(parent, SWT.NONE);
 		pointColor = parent.getDisplay().getSystemColor(SWT.COLOR_RED);
 
 		CListener clistener = new CListener();

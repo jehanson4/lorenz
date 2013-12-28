@@ -15,6 +15,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * GUI stuff for viewing what's going on.
@@ -124,8 +125,11 @@ public class Viewer implements DataSourceListener {
 	}
 
 	public Control buildControls(Composite parent) {
-		canvas = new Canvas(parent, SWT.BORDER | SWT.NO_BACKGROUND);
-		pointColor = parent.getDisplay().getSystemColor(SWT.COLOR_RED);
+		canvas = new Canvas(parent, SWT.NONE);
+
+		Display display = canvas.getDisplay();
+		canvas.setBackground(display.getSystemColor(SWT.COLOR_BLACK));
+		pointColor = display.getSystemColor(SWT.COLOR_RED);
 
 		CListener clistener = new CListener();
 		canvas.addControlListener(clistener);

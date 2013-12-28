@@ -1,62 +1,77 @@
 lorenz
 ======
 
-Visual illustration of the essential nature of chaos using the Lorenz butterfly
-attractor
+A visual illustration of the essential nature of chaos using the Lorenz butterfly
+attractor. For extra fun, it is organized as a series of self-contained "labs"
+-- a/k/a/ sub-projects or "sprints" -- that showcase the incremental development
+of the final app.
 
-Project organization
---------------------
+Each lab builds on the previous ones, but is fully self-contained. All the code
+for a given lab resides in a source directory labeled with the lab's number. The
+finished project resides in its own source directory, named "final".
 
-The code is organized as a sequence of sub-projects, a/k/a "labs", representing
-stages in the development of the final app. Each lab builds on the previous
-ones, but is fully self-contained. All the code for a given lab resides in a
-source directory labeled with the lab's number. The finished project resides
-in its own source directory, named "final". See "Outline of the Labs" below
-for a summary of what each lab covers. 
+For all labs, the executable app is called "LorenzLab". It runs as an ordinary
+Java application. To run it, by far the easiest option is to launch it from within
+Eclipse.
 
-The executable is called "LorenzLab", and runs as an ordinary Java application.
-By far the easiest option is to launch it from within Eclipse.
-
-This project is both a git repository and an Eclipse Plug-In Project.
+Note: this project as a whole is both a git repository and an Eclipse Plug-In Project.
+It was developed with Eclipse 4.3 and JavaSE 1.6.
 
 Outline of the Labs
 -------------------
 
-1. Display an SWT window showing a canvas with a sample message drawn on it.
+1. Getting Ready
 
-2. display data points that are generated programmatically. This requires transforming
-from 3-D double-valued data coordinates to the 2-D integer-valued coordinates used by
-the canvas. 
+Display an SWT window showing a canvas. Draw something in the middle of the canvas.
 
-3. Add live animation by having the app spin off a deamon thread on which the
-   data points are produced. (It will help to make the point-generator interface
-   extend Runnable.) Add buttons to the GUI to start and stop the production of
-   new data points. Have it keep generating new points so long as it's running.
+2. Data Points and Transforms
 
-4. Define event-style APIs for  a thing that generates data points
-   (PointGenerator) and a thing that receives them and does something with them
-   (PointListener). Have a look at java.util.Event and java.util.EventListener
-   for inspiration. The PointGenerator interface should have methods for adding
-   and removing PointListeners.
+Define data points (points in a 3-D Euclidean space). Implement a simple transform
+to map data points onto pixel locations. Draw some sample data points on the canvas.
 
-5. Make it so that you can set up the Graph to receive data points from multiple
-   PointGenerators and display them in different colors. Also, have it keep the
-   points to be displayed in a queue of bounded length, so that it will only
-   display the most-recent N points it's received.
+3. Data Plumbing
 
-6. write a couple warmup point-generators: (1) one that does a random walk in
-   the unit cube. (2) one that generates Lissajous figures. Add GUI stuff to let
-   user choose which point-generator he wants to use
+Separate the production of data from its display.
 
-7. write a point-generator for the Lorenz system and hook it in as a possible
-   point-generator.
+4. Animation
 
-8. Set it up to show off differences between two trajectories that start out
-   imperceptibly near each other. Do this by having it display two trajectories
-   (in two colors) that differ ONLY in that they start from two imperceptibly
-   different points. Make it so that you can pick which point-generator to use
-   with it.  In RandomWalk, the two trajectories go their separate ways
-   immediately. In Lissajous the trajectories will remain on top of each other
-   forever. In Lorenz, the trajectories will start out on top of each other but
-   eventually will separate to trace out the 'butterfly' shape.
+Add live animation of a time-sequence of data points. Create GUI controls to start
+and stop the production of new data.
+
+5. Lorenz system
+
+Introduce the Lorenz equations and numerical integration.
+
+6. Multiple timeseries
+
+Add support for multiple independent timeseries. Show the Lorenz system's
+sensitive dependence on initial conditions.
+
+7. Cleanup and controls
+
+This lab adds UI controls to support user-selected and -configured
+data sources, initial conditions, and display properties.
+
+--------------------------------------
+
+(The summary of Labs ends here. Remnants of an old schedule follow.)
+
+--all the data-gen's operate over same timescale and spatial region
+
+--axes?
+
+--Stable ODE such as pendulum
+
+--GUI support to choose the data source and its config params
+  
+--Quick menu w/ prefab configs that show interesting features.
+
+--(maybe) Better data transform to provide more 3-d look
+
+--smoother animation, somehow. Maybe drive repaint requests off a timer?
+
+--save data to file(s) as well as displaying it. Use DataSourceListener(s).
+
+--Load config data from file. Generate config files for three cases:
+  Lorenz, random, pendulum; 2 timeseries for each w/ tiny offset in IC.
    

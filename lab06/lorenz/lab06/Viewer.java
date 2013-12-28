@@ -17,6 +17,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * GUI stuff for viewing what's going on.
@@ -205,19 +206,23 @@ public class Viewer {
 	}
 	
 	public Control buildControls(Composite parent) {
-		canvas = new Canvas(parent, SWT.BORDER | SWT.NO_BACKGROUND);
-		CListener clistener = new CListener();
-		canvas.addControlListener(clistener);
-		canvas.addPaintListener(clistener);
+		canvas = new Canvas(parent, SWT.NONE);
 
+		Display display = canvas.getDisplay();
+		canvas.setBackground(display.getSystemColor(SWT.COLOR_BLACK));
+		
 		// ensure timeseries colors are not null.
 		int idx = 0;
 		for (TimeseriesImpl ts : timeseriesMap.values()) {
 			if (ts.getColor() == null) {
-				ts.setColor(canvas.getDisplay().getSystemColor(SYSTEM_COLORS[idx % SYSTEM_COLORS.length]));
+				ts.setColor(display.getSystemColor(SYSTEM_COLORS[idx % SYSTEM_COLORS.length]));
 				idx++;
 			}
 		}
+
+		CListener clistener = new CListener();
+		canvas.addControlListener(clistener);
+		canvas.addPaintListener(clistener);
 
 		return canvas;
 	}
