@@ -1,0 +1,6 @@
+Lorenz Lab Notes -- Lab #7 -- Controls
+
+This lab adds UI controls to support user-selected and -configured
+data sources, initial conditions, and display properties.
+ 
+
