@@ -26,7 +26,7 @@ public class LorenzLab {
 
 		try {
 			InputStream loggerStream = new FileInputStream(
-					"lab04/logging.properties");
+					"lab06/logging.properties");
 			LogManager.getLogManager().readConfiguration(loggerStream);
 		} catch (Exception e) {
 			System.out.println("Ignoring problem with logger configuration: "
