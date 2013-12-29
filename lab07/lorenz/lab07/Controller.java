@@ -12,16 +12,17 @@ public class Controller {
 	// Variables
 	// ======================================
 
-	private final RunnerControls runnerControls;
-	private final ScenarioControls scenarioControls;
+	private final RunnerControl runnerControls;
+	private final ScenarioControl scenarioControls;
 	
 	// ======================================
 	// Creation
 	// ======================================
 
 	public Controller(DataSourceContainer sources, Viewer viewer) {
-		this.runnerControls = new RunnerControls(sources);
-		this.scenarioControls = new ScenarioControls(sources, viewer);
+		this.runnerControls = new RunnerControl(sources);
+		this.scenarioControls = new ScenarioControl(sources, viewer);
+		runnerControls.addRunnerControlListener(scenarioControls);
 	}
 
 	// ======================================

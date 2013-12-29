@@ -33,8 +33,10 @@ public class SimpleGraphicsTransform {
 
 	public void initialize(DataBox dataBounds, Rectangle drawArea) {
 		final String mtdName = "initialize";
-		logger.logp(Level.INFO, clsName, mtdName, "dataBounds=" + dataBounds
-				+ " drawArea=" + drawArea);
+		if (logger.isLoggable(Level.FINE)) {
+			String msg = "dataBounds=" + dataBounds + " drawArea=" + drawArea;
+			logger.logp(Level.FINE, clsName, mtdName, msg);
+		}
 
 		int a0 = drawArea.x;
 		int a1 = drawArea.x + drawArea.width;

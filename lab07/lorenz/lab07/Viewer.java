@@ -170,6 +170,7 @@ public class Viewer {
 	private SimpleGraphicsTransform transform;
 	private DataBox dataBounds;
 	private Canvas canvas;
+	private volatile Display display;
 	private volatile boolean clearRequested;
 	private volatile boolean redrawRequested;
 	private final Map<String, TimeseriesImpl> timeseriesMap;
@@ -182,6 +183,7 @@ public class Viewer {
 		this.transform = new SimpleGraphicsTransform();
 		this.dataBounds = new DataBox(DataPoint.ORIGIN, 2.0);
 		this.canvas = null;
+		this.display = null;
 		this.clearRequested = false;
 		this.redrawRequested = false;
 		this.timeseriesMap = new HashMap<String, TimeseriesImpl>();
@@ -221,9 +223,9 @@ public class Viewer {
 	}
 
 	public Control buildControls(Composite parent) {
+		display = parent.getDisplay();
 		canvas = new Canvas(parent, SWT.NONE);
 
-		Display display = canvas.getDisplay();
 		canvas.setBackground(display.getSystemColor(SWT.COLOR_BLACK));
 
 		// ensure colors of already-added timeseries are not null.
@@ -244,15 +246,18 @@ public class Viewer {
 	// ===================================
 
 	private void redraw() {
-		if (!redrawRequested && canvas != null && !canvas.isDisposed()) {
-			canvas.getDisplay().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					redrawRequested = false;
-					if (!canvas.isDisposed())
-						canvas.redraw();
-				}
-			});
+		if (!redrawRequested) {
+			redrawRequested = true;
+			if (display != null && !display.isDisposed()) {
+				display.asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						redrawRequested = false;
+						if (!canvas.isDisposed())
+							canvas.redraw();
+					}
+				});
+			}
 		}
 	};
 
