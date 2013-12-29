@@ -27,6 +27,7 @@ public class SingleLineFormatter extends Formatter {
 				+ clsNameLength + "s %-" + mtdNameLength + "s %s";
 	}
 
+	@SuppressWarnings("boxing")
 	@Override
 	public String format(LogRecord rec) {
 		StringWriter w1 = new StringWriter();

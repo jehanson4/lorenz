@@ -123,6 +123,7 @@ public class DataBox {
 		return zMax;
 	}
 
+	@Override
 	public String toString() {
 
 		return "{ min=" + DataPoint.makeTupleString(xMin, yMin, zMin) + ", max="

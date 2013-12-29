@@ -2,7 +2,6 @@ package lorenz.lab07;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,38 +42,6 @@ public abstract class DataSource implements Steppable {
 		return name;
 	}
 
-	/**
-	 * Attempts to set the receiver's parameters from the given Properties
-	 * object. Unrecognized parameter names and illegal values are ignored.
-	 * Parameters not found in the given Properties object are left unchanged.
-	 * <p>
-	 * For override. This returns does nothing.
-	 */
-	public void setParameters(Properties params) {}
-
-	/**
-	 * Returns the receiver's default parameters in the form of a Properties
-	 * object.
-	 * <p>
-	 * For override. This returns empty Properties object.
-	 * 
-	 * @return the default parameters. Not null, but may be empty.
-	 */
-	public Properties getParameterDefaults() {
-		return new Properties();
-	}
-
-	/**
-	 * Returns the receiver's current parameters in the form of a Properties
-	 * object.
-	 * <p>
-	 * For override. This returns empty Properties object.
-	 * 
-	 * @return the current parameters. Not null, but may be empty.
-	 */
-	public Properties getParameters() {
-		return new Properties();
-	}
 
 	public abstract DataBox getDataBoundsHint();
 

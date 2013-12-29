@@ -1,7 +1,6 @@
 package lorenz.lab07;
 
 
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,8 +22,6 @@ public class RungeKutta4_3D extends DataSource {
 	// Variables
 	// =============================================
 
-	private static final double DEFAULT_TIME_STEP = 0.001;
-	
 	private final ODESystem_3D odeSystem;
 	private DataPoint initialState;
 	private double timeStep;
@@ -55,7 +52,7 @@ public class RungeKutta4_3D extends DataSource {
 
 		this.odeSystem = odeSystem;
 		this.initialState = initialState;
-		this.timeStep = DEFAULT_TIME_STEP;
+		this.timeStep = 0.001;
 		this.currP = new double[3];
 		
 		// (OK to call this in ctor b/c it's final)
@@ -74,26 +71,6 @@ public class RungeKutta4_3D extends DataSource {
 	@Override
 	public DataBox getDataBoundsHint() {
 		return odeSystem.getDataBoundsHint();
-	}
-
-	@Override
-	public void setParameters(Properties params) {
-		super.setParameters(params);
-		// TODO: timeStep, odeSystem, initialState
-	}
-
-	@Override
-	public Properties getParameterDefaults() {
-		Properties params = super.getParameterDefaults();
-		// TODO: timeStep, odeSystem, initialState
-		return params;
-	}
-
-	@Override
-	public Properties getParameters() {
-		Properties params = super.getParameters();
-		// TODO: timeStep, odeSystem, initialState
-		return params;
 	}
 
 	@Override

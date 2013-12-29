@@ -12,7 +12,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -43,7 +42,6 @@ public class ScenarioControl implements RunnerControlListener {
 	private final Map<String, Scenario> scenarios;
 	private String defaultScenarioName;
 	private Scenario installedScenario;
-	private Composite scenarioParent;
 
 	// ==========================================
 	// Creation
@@ -59,7 +57,6 @@ public class ScenarioControl implements RunnerControlListener {
 		this.scenarios = new HashMap<String, Scenario>();
 		this.installedScenario = null;
 		this.defaultScenarioName = null;
-		this.scenarioParent = null;
 	}
 
 	// ==========================================
@@ -99,10 +96,6 @@ public class ScenarioControl implements RunnerControlListener {
 		scenarioCombo = new Combo(cpane, SWT.DROP_DOWN | SWT.READ_ONLY);
 		scenarioCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 
-		scenarioParent = new Composite(cpane, SWT.BORDER);
-		scenarioParent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		scenarioParent.setLayout(new FillLayout());
-
 		// Configure the scenario combo.
 		// It's important to add the selection listener after installing the
 		// default scenario
@@ -136,7 +129,7 @@ public class ScenarioControl implements RunnerControlListener {
 			logger.logp(Level.FINE, clsName, mtdName, "disabling scenario controls");
 		}
 		scenarioCombo.setEnabled(false);
-		scenarioParent.setEnabled(false);
+		// LAB8 scenarioConfigParent.setEnabled(false);
 	}
 
 	@Override
@@ -146,7 +139,7 @@ public class ScenarioControl implements RunnerControlListener {
 			logger.logp(Level.FINE, clsName, mtdName, "enabling scenario controls");
 		}
 		scenarioCombo.setEnabled(true);
-		scenarioParent.setEnabled(true);
+		// LAB8 scenarioConfigParent.setEnabled(true);
 	}
 
 	@Override
@@ -162,6 +155,7 @@ public class ScenarioControl implements RunnerControlListener {
 	// ==============================
 
 	private void initScenarioComboItems() {
+
 		// TODO: preserve info about currently installed scenario.
 
 		if (scenarioCombo != null && !scenarioCombo.isDisposed()) {
@@ -193,20 +187,15 @@ public class ScenarioControl implements RunnerControlListener {
 		else {
 			if (installedScenario != null) {
 				installedScenario.teardown(sources, viewer);
-				if (scenarioParent != null)
-					for (Control c : scenarioParent.getChildren())
-						c.dispose();
 			}
+			
+			sources.reset();
+			
 			if (logger.isLoggable(Level.FINE)) {
 				logger.logp(Level.FINE, clsName, mtdName, "installing scenario " + name);
 			}
 			this.installedScenario = sc;
 			sc.setup(sources, viewer);
-			if (scenarioParent != null && !scenarioParent.isDisposed()) {
-				sc.buildControls(scenarioParent);
-				scenarioParent.layout(true, true);
-			}
-
 		}
 	}
 }

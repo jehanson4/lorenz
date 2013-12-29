@@ -1,6 +1,5 @@
-Lorenz Lab Notes -- Lab #7 -- Controls
+Lorenz Lab Notes -- Lab #7 -- Scenarios
 
-This lab adds UI controls to support user-selected and -configured
-data sources, initial conditions, and display properties.
+This lab adds support for user-selected scenarios that use specific data sources.
  
 

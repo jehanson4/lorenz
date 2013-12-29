@@ -31,7 +31,7 @@ public class DataPoint {
 			throw new IllegalArgumentException("y must be a finite number");
 		if (!isNumber(z))
 			throw new IllegalArgumentException("z must be a finite number");
-		
+
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -53,10 +53,11 @@ public class DataPoint {
 		return z;
 	}
 
+	@Override
 	public String toString() {
-		return makeTupleString(x,y,z);
+		return makeTupleString(x, y, z);
 	}
-	
+
 	public static String makeTupleString(double x, double y, double z) {
 		return "[" + x + ", " + y + ", " + z + "]";
 	}

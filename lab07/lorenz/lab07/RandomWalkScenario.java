@@ -1,9 +1,10 @@
 package lorenz.lab07;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -20,39 +21,33 @@ public class RandomWalkScenario implements Scenario {
 	// Variables
 	// ================================
 
-	private Composite control;
-
+	private final List<String> dsNames;
+	
 	// ================================
 	// Creation
 	// ================================
 
 	public RandomWalkScenario() {
 		super();
-		control = null;
+		dsNames = new ArrayList<String>();
 	}
 
 	// ================================
 	// Operation
 	// ================================
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see lorenz.lab07.Scenario#setup(lorenz.lab07.DataSourceContainer,
-	 * lorenz.lab07.Viewer)
-	 */
 	@Override
 	public void setup(DataSourceContainer sources, Viewer viewer) {
 		final String mtdName = "setup";
 		if (logger.isLoggable(Level.FINE)) {
 			logger.logp(Level.FINE, clsName, mtdName, "enter");
 		}
+
+		DataSource ds1 = new RandomWalker();
+		dsNames.add(ds1.getName());
+		DataSource ds2 = new RandomWalker();
+		dsNames.add(ds2.getName());
 		
-		sources.reset();
-
-		DataSource ds1 = new RandomWalker("ds1");
-		DataSource ds2 = new RandomWalker("ds2");
-
 		sources.add(ds1);
 		sources.add(ds2);
 
@@ -63,39 +58,25 @@ public class RandomWalkScenario implements Scenario {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see lorenz.lab07.Scenario#teardown(lorenz.lab07.DataSourceContainer,
-	 * lorenz.lab07.Viewer)
-	 */
 	@Override
 	public void teardown(DataSourceContainer sources, Viewer viewer) {
-		sources.remove("ds1");
-		sources.remove("ds2");
-		viewer.removeTimeseries("ds1");
-		viewer.removeTimeseries("ds2");
+		for (String dsName : dsNames) {
+			sources.remove(dsName);
+			viewer.removeTimeseries(dsName);
+		}
+		dsNames.clear();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * lorenz.lab07.Scenario#buildControls(org.eclipse.swt.widgets.Composite)
-	 */
 	@Override
 	public Control buildControls(Composite parent) {
-		control = new Composite(parent, SWT.NONE);
-		// TODO
-		return control;
+		final String mtdName = "buildControls";
+		if (logger.isLoggable(Level.FINE)) {
+			logger.logp(Level.FINE, clsName, mtdName, "no controls to build");
+		}
+		return null;
 	}
 
 	@Override
-	public void dispose() {
-		if (control != null) {
-			control.dispose();
-			control = null;
-		}
-	}
+	public void dispose() {}
 
 }
