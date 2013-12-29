@@ -69,24 +69,11 @@ public class LorenzLab {
 
 	public LorenzLab() {
 		super();
-
-		ODESystem_3D sys = new LorenzSystem();
-		DataPoint pt1 = sys.getInitialStateHint();
-		DataSource ds1 = new RungeKutta4_3D("ds1", sys, pt1);
-		DataPoint pt2 = new DataPoint(pt1.getX()+1E-5, pt1.getY(), pt1.getZ());
-		DataSource ds2 = new RungeKutta4_3D("ds2", sys, pt2);
-				
 		this.sources = new DataSourceContainer();
-		sources.add(ds1);
-		sources.add(ds2);
-
 		this.viewer = new Viewer();
-		viewer.setDataBounds(sys.getDataBoundsHint());
-		for (DataSource ds : sources.values()) {
-			viewer.addTimeseries(ds);
-		}
-
-		this.controller = new Controller(sources);
+		this.controller = new Controller(sources, viewer);
+		this.controller.addScenario("Lorenz", new LorenzScenario());
+		this.controller.addScenario("RandomWalk", new RandomWalkScenario());
 	}
 
 	// ==========================================

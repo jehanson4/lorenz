@@ -56,7 +56,7 @@ public class RandomWalker extends DataSource {
 		this.bounds = new DataBox(initialState, 2.0);
 		this.rng = new Random();
 		this.stepSize = 0.005;
-		this.timeStep = 1.0;
+		this.timeStep = 1E-4;
 		this.currentX = initialState.getX();
 		this.currentY = initialState.getY();
 		this.currentZ = initialState.getZ();

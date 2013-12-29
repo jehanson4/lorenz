@@ -94,7 +94,7 @@ public class RunnerControls {
 	}
 
 	public Control buildControls(Composite parent) {
-		Composite cpane = new Composite(parent, SWT.BORDER);
+		Composite cpane = new Composite(parent, SWT.NONE);
 		cpane.setLayout(new GridLayout(4, true));
 
 		Display display = parent.getDisplay();

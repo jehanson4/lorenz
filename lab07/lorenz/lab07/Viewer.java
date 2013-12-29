@@ -36,10 +36,12 @@ public class Viewer {
 
 	public interface Timeseries {
 		public String getName();
+
 		public Color getColor();
+
 		public void setColor(Color c);
 	}
-	
+
 	private final class TimeseriesImpl implements Timeseries, DataSourceListener {
 
 		private final DataSource ds;
@@ -52,25 +54,30 @@ public class Viewer {
 			this.pointColor = null;
 			this.eventsToDraw = new LinkedList<DataSourceEvent>();
 			this.maxHistory = 4.0;
-			
+
 			ds.addDataSourceListener(this);
+		}
+
+		public void teardown() {
+			ds.removeDataSourceListener(this);
+			eventsToDraw.clear();
 		}
 
 		@Override
 		public String getName() {
 			return ds.getName();
 		}
-		
+
 		@Override
 		public Color getColor() {
 			return pointColor;
 		}
-		
+
 		@Override
 		public void setColor(Color c) {
 			pointColor = c;
 		}
-		
+
 		@Override
 		public void dataSourceReset(DataSourceEvent e) {
 			synchronized (eventsToDraw) {
@@ -81,6 +88,7 @@ public class Viewer {
 
 		@Override
 		public void dataPointGenerated(DataSourceEvent e) {
+			// set overall most recent timestamp
 			synchronized (eventsToDraw) {
 				eventsToDraw.addLast(e);
 				double oldestToKeep = e.getTimestamp() - maxHistory;
@@ -101,8 +109,8 @@ public class Viewer {
 			// gc.setBackground(pointColor);
 			synchronized (eventsToDraw) {
 				if (logger.isLoggable(Level.FINE))
-					logger.logp(Level.FINE, clsName, mtdName, "Drawing "
-							+ eventsToDraw.size() + " data points");
+					logger.logp(Level.FINE, clsName, mtdName,
+							"Drawing " + eventsToDraw.size() + " data points");
 				for (DataSourceEvent event : eventsToDraw) {
 					// MAYBE: if (event.getTimestamp() <= maxTime) { ...
 					canvasPt = transform.dataToGraphics(event.getDataPoint());
@@ -122,8 +130,7 @@ public class Viewer {
 	private class CListener implements ControlListener, PaintListener {
 
 		@Override
-		public void controlMoved(ControlEvent e) {
-		}
+		public void controlMoved(ControlEvent e) {}
 
 		@Override
 		public void controlResized(ControlEvent e) {
@@ -146,6 +153,8 @@ public class Viewer {
 			for (TimeseriesImpl t : timeseriesMap.values()) {
 				t.draw(gc, transform);
 			}
+
+			// gc.setForeground(white);
 			// gc.drawText("t=" + latestEventTimestamp, 0, 0);
 
 		}
@@ -155,13 +164,8 @@ public class Viewer {
 	// Variables
 	// ==================================
 
-	private static final int[] SYSTEM_COLORS = {
-		SWT.COLOR_RED,
-		SWT.COLOR_GREEN,
-		SWT.COLOR_BLUE,
-		SWT.COLOR_CYAN,
-		SWT.COLOR_DARK_MAGENTA
-	};
+	private static final int[] SYSTEM_COLORS = { SWT.COLOR_RED, SWT.COLOR_GREEN,
+			SWT.COLOR_BLUE, SWT.COLOR_CYAN, SWT.COLOR_DARK_MAGENTA };
 
 	private SimpleGraphicsTransform transform;
 	private DataBox dataBounds;
@@ -201,26 +205,31 @@ public class Viewer {
 
 	public Timeseries addTimeseries(DataSource ds) {
 		String name = ds.getName();
-		if (timeseriesMap.containsKey(name)) 
-			throw new IllegalArgumentException("datasource with name \"" + name + "\" is already present");
+		if (timeseriesMap.containsKey(name))
+			throw new IllegalArgumentException("datasource with name \"" + name
+					+ "\" is already present");
 		TimeseriesImpl ts = new TimeseriesImpl(ds);
+		assignDefaultColor(ts, timeseriesMap.size());
 		timeseriesMap.put(name, ts);
 		return ts;
 	}
-	
+
+	public void removeTimeseries(String name) {
+		TimeseriesImpl ts = timeseriesMap.remove(name);
+		if (ts != null)
+			ts.teardown();
+	}
+
 	public Control buildControls(Composite parent) {
 		canvas = new Canvas(parent, SWT.NONE);
 
 		Display display = canvas.getDisplay();
 		canvas.setBackground(display.getSystemColor(SWT.COLOR_BLACK));
-		
-		// ensure timeseries colors are not null.
+
+		// ensure colors of already-added timeseries are not null.
 		int idx = 0;
 		for (TimeseriesImpl ts : timeseriesMap.values()) {
-			if (ts.getColor() == null) {
-				ts.setColor(display.getSystemColor(SYSTEM_COLORS[idx % SYSTEM_COLORS.length]));
-				idx++;
-			}
+			assignDefaultColor(ts, idx++);
 		}
 
 		CListener clistener = new CListener();
@@ -230,12 +239,14 @@ public class Viewer {
 		return canvas;
 	}
 
-	/**
-	 * Package private: for use by the Timeseries objects
-	 */
-	void redraw() {
+	// ===================================
+	// Private
+	// ===================================
+
+	private void redraw() {
 		if (!redrawRequested && canvas != null && !canvas.isDisposed()) {
 			canvas.getDisplay().asyncExec(new Runnable() {
+				@Override
 				public void run() {
 					redrawRequested = false;
 					if (!canvas.isDisposed())
@@ -244,4 +255,12 @@ public class Viewer {
 			});
 		}
 	};
+
+	private void assignDefaultColor(Timeseries ts, int idx) {
+		if (ts.getColor() == null && canvas != null && !canvas.isDisposed()) {
+			ts.setColor(canvas.getDisplay().getSystemColor(
+					SYSTEM_COLORS[idx % SYSTEM_COLORS.length]));
+		}
+	}
+
 }
