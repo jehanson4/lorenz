@@ -70,6 +70,7 @@ public class LorenzScenario implements Scenario {
 			sources.remove(dsName);
 			viewer.removeTimeseries(dsName);
 		}
+		dsNames.clear();
 	}
 
 	@Override

@@ -129,7 +129,6 @@ public class ScenarioControl implements RunnerControlListener {
 			logger.logp(Level.FINE, clsName, mtdName, "disabling scenario controls");
 		}
 		scenarioCombo.setEnabled(false);
-		// LAB8 scenarioConfigParent.setEnabled(false);
 	}
 
 	@Override
@@ -139,7 +138,6 @@ public class ScenarioControl implements RunnerControlListener {
 			logger.logp(Level.FINE, clsName, mtdName, "enabling scenario controls");
 		}
 		scenarioCombo.setEnabled(true);
-		// LAB8 scenarioConfigParent.setEnabled(true);
 	}
 
 	@Override
