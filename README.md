@@ -47,10 +47,10 @@ Introduce the Lorenz equations and numerical integration.
 Add support for multiple independent timeseries. Show the Lorenz system's
 sensitive dependence on initial conditions.
 
-7. Cleanup and controls
+7. Multiple scenarios
 
-This lab adds UI controls to support user-selected and -configured
-data sources, initial conditions, and display properties.
+Add support for multiple "scenarios", each of which has its own data sources and
+configuration parameters; add GUI for scenario selection. 
 
 --------------------------------------
 

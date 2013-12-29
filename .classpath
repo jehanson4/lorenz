@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="lab01"/>
 	<classpathentry kind="src" path="lab02"/>
 	<classpathentry kind="src" path="lab03"/>
@@ -7,8 +9,5 @@
 	<classpathentry kind="src" path="lab05"/>
 	<classpathentry kind="src" path="lab06"/>
 	<classpathentry kind="src" path="lab07"/>
-	<classpathentry kind="src" path="final"/>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
