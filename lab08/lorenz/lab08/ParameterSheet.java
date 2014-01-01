@@ -23,9 +23,9 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author jehanson
  */
-public class ParameterControl {
+public class ParameterSheet {
 
-	private static final String clsName = ParameterControl.class.getName();
+	private static final String clsName = ParameterSheet.class.getName();
 	private static final Logger logger = Logger.getLogger(clsName);
 
 	// ==========================
@@ -102,7 +102,7 @@ public class ParameterControl {
 	// Creation
 	// ==========================
 
-	public ParameterControl(ParameterProvider provider) {
+	public ParameterSheet(ParameterProvider provider) {
 		super();
 		this.provider = provider;
 		this.cpane = null;

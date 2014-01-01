@@ -107,21 +107,21 @@ public class LorenzScenario extends AbstractScenario {
 		});
 
 		// Q: memory leak???
-		ParameterControl coeffSheet = new ParameterControl(sys);
+		ParameterSheet coeffSheet = new ParameterSheet(sys);
 		Control coeffControl = coeffSheet.buildControls(bar);
 		ExpandItem coeffItem = new ExpandItem(bar, SWT.NONE);
 		coeffItem.setText("System coefficients");
 		coeffItem.setHeight(coeffControl.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		coeffItem.setControl(coeffControl);
 
-		ParameterControl icSheet = new ParameterControl(initialCondition);
+		ParameterSheet icSheet = new ParameterSheet(initialCondition);
 		Control icControl = icSheet.buildControls(bar);
 		ExpandItem icItem = new ExpandItem(bar, SWT.NONE);
 		icItem.setText("Initial condition");
 		icItem.setHeight(icControl.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		icItem.setControl(icControl);
 
-		ParameterControl ts2Sheet = new ParameterControl(secondTimeseriesOffset);
+		ParameterSheet ts2Sheet = new ParameterSheet(secondTimeseriesOffset);
 		Control ts2Control = ts2Sheet.buildControls(bar);
 		ExpandItem ts2Item = new ExpandItem(bar, SWT.NONE);
 		ts2Item.setText("Initial offset in 2nd timeseries");
