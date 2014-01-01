@@ -1,0 +1,5 @@
+Lorenz Lab Notes -- Lab #7 -- Controls
+
+This lab adds UI controls for configuring the scenarios.
+ 
+
