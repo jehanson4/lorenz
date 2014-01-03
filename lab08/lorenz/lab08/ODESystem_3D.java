@@ -1,16 +1,39 @@
 package lorenz.lab08;
 
+import java.util.Map;
 
 /**
  * System of ordinary differential equations with 3 degrees of freedom.
  * 
  * @author jehanson
  */
-public interface ODESystem_3D extends ParameterProvider {
+public interface ODESystem_3D {
 
 	public DataBox getDataBoundsHint();
 
 	public DataPoint getInitialStateHint();
+
+	/**
+	 * Returns the ODE system's coefficients in the form of key/value pairs.
+	 * <p>
+	 * No attempt is made to standardize the coefficient names. Each different
+	 * ODE system will typically have its own idiosyncratic set of coefficients.
+	 * 
+	 * @return the mapping of coefficient names to values.
+	 */
+	public Map<String, Double> getCoefficients();
+
+	public Map<String, Double> getCoefficientsHint();
+
+	/**
+	 * Reads values from the map to set coefficients.
+	 * <p>
+	 * Coefficients not named in the map are left unmodified. Unrecognized keys
+	 * are ignored. Invalid values cause an exception to be thrown.
+	 * 
+	 * @param coefficients Map containing coefficients to be modified.
+	 */
+	public void setCoefficients(Map<String, Double> coefficients);
 
 	/**
 	 * Calculates the derivatives with respect to time, evaluated at the given
@@ -30,5 +53,4 @@ public interface ODESystem_3D extends ParameterProvider {
 	 */
 	public void takeDerivatives(double t, double[] p, double[] dpdt);
 
-	
 }

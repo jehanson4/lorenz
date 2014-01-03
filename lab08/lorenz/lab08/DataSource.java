@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  * 
  * @author jehanson
  */
-public abstract class DataSource implements Steppable, ParameterProvider {
+public abstract class DataSource implements Steppable {
 
 	private static final String clsName = DataSource.class.getName();
 	private static final Logger logger = Logger.getLogger(clsName);
@@ -41,34 +41,6 @@ public abstract class DataSource implements Steppable, ParameterProvider {
 
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * For override. This impl does nothing.
-	 * 
-	 * @see lorenz.lab08.ParameterProvider#setParameters(java.util.Properties)
-	 */
-	@Override
-	public void setParameters(Properties params) {}
-
-	/**
-	 * For override. This impl returns empty Properties object.
-	 * 
-	 * @see lorenz.lab08.ParameterProvider#getParameterDefaults()
-	 */
-	@Override
-	public Properties getParameterDefaults() {
-		return new Properties();
-	}
-
-	/**
-	 * For override. This impl returns empty Properties object.
-	 * 
-	 * @see lorenz.lab08.ParameterProvider#getParameters()
-	 */
-	@Override
-	public Properties getParameters() {
-		return new Properties();
 	}
 
 	public abstract DataBox getDataBoundsHint();

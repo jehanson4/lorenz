@@ -216,6 +216,10 @@ public class Viewer {
 		return ts;
 	}
 
+	public Timeseries getTimeseries(String name) {
+		return timeseriesMap.get(name);
+	}
+	
 	public void removeTimeseries(String name) {
 		TimeseriesImpl ts = timeseriesMap.remove(name);
 		if (ts != null)

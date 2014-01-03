@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,8 +32,12 @@ public class LorenzSystem implements ODESystem_3D {
 
 	private static final double DEFAULT_SIGMA = 10;
 	private static final double DEFAULT_RHO = 28;
-	private static final double DEFAULT_BETA = 8. / 3.;
+	private static final double DEFAULT_BETA = 2.667;
 
+	private static final String SIGMA_KEY = "sigma";
+	private static final String RHO_KEY = "rho";
+	private static final String BETA_KEY = "beta";
+	
 	private double sigma;
 	private double rho;
 	private double beta;
@@ -51,86 +57,54 @@ public class LorenzSystem implements ODESystem_3D {
 	// Operation
 	// ==================================
 
+	
 	@Override
-	public Properties getParameters() {
-		final String mtdName = "getParameters";
+	public Map<String, Double> getCoefficients() {
+		final String mtdName = "getCoefficients";
 		if (logger.isLoggable(Level.FINE)) {
 			String msg = "entering";
 			logger.logp(Level.FINE, clsName, mtdName, msg);
 		}
-		Properties params = new Properties();
-		params.setProperty("sigma", String.valueOf(this.sigma));
-		params.setProperty("rho", String.valueOf(this.rho));
-		params.setProperty("beta", String.valueOf(this.beta));
-		return params;
+		Map<String, Double> coeffs = new HashMap<String, Double>();
+		coeffs.put(SIGMA_KEY, Double.valueOf(this.sigma));
+		coeffs.put(RHO_KEY, Double.valueOf(this.rho));
+		coeffs.put(BETA_KEY, Double.valueOf(this.beta));
+		return coeffs;
 	}
 
 	@Override
-	public Properties getParameterDefaults() {
-		final String mtdName = "getParameterDefaults";
+	public Map<String, Double> getCoefficientsHint() {
+		final String mtdName = "getCoefficientsHint";
 		if (logger.isLoggable(Level.FINE)) {
 			String msg = "entering";
 			logger.logp(Level.FINE, clsName, mtdName, msg);
 		}
-		Properties params = new Properties();
-		params.setProperty("sigma", String.valueOf(DEFAULT_SIGMA));
-		params.setProperty("rho", String.valueOf(DEFAULT_RHO));
-		params.setProperty("beta", String.valueOf(DEFAULT_BETA));
-		return params;
+		Map<String, Double> coeffs = new HashMap<String, Double>();
+		coeffs.put(SIGMA_KEY, Double.valueOf(DEFAULT_SIGMA));
+		coeffs.put(RHO_KEY, Double.valueOf(DEFAULT_RHO));
+		coeffs.put(BETA_KEY, Double.valueOf(DEFAULT_BETA));
+		return coeffs;
 	}
 
 	@Override
-	public void setParameters(Properties params) {
-		final String mtdName = "setParameters";
+	public void setCoefficients(Map<String, Double> coeffs) {
+		final String mtdName = "setCoefficients";
 		if (logger.isLoggable(Level.FINE)) {
-			OutputStream s1 = new ByteArrayOutputStream();
-			PrintStream s2 = new PrintStream(s1);
-			s2.println("params:");
-			try {
-				params.store(s2, "");
-			}
-			catch (IOException e) {
-				// Ignore
-			}
-			s2.close();
-			logger.logp(Level.FINE, clsName, mtdName, s1.toString());
+			String msg = "entering";
+			logger.logp(Level.FINE, clsName, mtdName, msg);
 		}
 		
-		try {
-			String s = params.getProperty("sigma");
-			if (s != null)
-				this.sigma = Double.parseDouble(s);
-		}
-		catch (Exception err) {
-			if (logger.isLoggable(Level.FINE)) {
-				String msg = "Error reading sigma -- IGNORING -- err=[" + err + "]";
-				logger.logp(Level.FINE, clsName, mtdName, msg);
-			}
-		}
-
-		try {
-			String s = params.getProperty("rho");
-			if (s != null)
-				this.rho = Double.parseDouble(s);
-		}
-		catch (Exception err) {
-			if (logger.isLoggable(Level.FINE)) {
-				String msg = "Error reading rho -- IGNORING -- err=" + err;
-				logger.logp(Level.FINE, clsName, mtdName, msg);
-			}
-		}
-
-		try {
-			String s = params.getProperty("beta");
-			if (s != null)
-				this.beta = Double.parseDouble(s);
-		}
-		catch (Exception err) {
-			if (logger.isLoggable(Level.FINE)) {
-				String msg = "Error reading beta -- IGNORING -- err=" + err;
-				logger.logp(Level.FINE, clsName, mtdName, msg);
-			}
-		}
+		Double v;
+		
+		v = coeffs.get(SIGMA_KEY);
+		if (v != null)
+			this.sigma = v.doubleValue();
+		v = coeffs.get(RHO_KEY);
+		if (v != null)
+			this.rho = v.doubleValue();
+		v = coeffs.get(BETA_KEY);
+		if (v != null)
+			this.beta = v.doubleValue();
 	}
 
 	@Override

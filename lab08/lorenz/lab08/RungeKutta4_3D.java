@@ -76,24 +76,20 @@ public class RungeKutta4_3D extends DataSource {
 		return odeSystem.getDataBoundsHint();
 	}
 
-	@Override
-	public void setParameters(Properties params) {
-		super.setParameters(params);
-		// TODO: timeStep, odeSystem, initialState
+	public DataPoint getInitialState() {
+		return this.initialState;
 	}
 
-	@Override
-	public Properties getParameterDefaults() {
-		Properties params = super.getParameterDefaults();
-		// TODO: timeStep, odeSystem, initialState
-		return params;
+	public void setInitialState(DataPoint initialState) {
+		this.initialState = initialState;
 	}
 
-	@Override
-	public Properties getParameters() {
-		Properties params = super.getParameters();
-		// TODO: timeStep, odeSystem, initialState
-		return params;
+	public double getTimeStep() {
+		return this.timeStep;
+	}
+
+	public void setTimeStep(double timeStep) {
+		this.timeStep = timeStep;
 	}
 
 	@Override

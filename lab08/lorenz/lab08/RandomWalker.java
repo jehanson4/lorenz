@@ -87,27 +87,6 @@ public class RandomWalker extends DataSource {
 	public double getCurrentTime() {
 		return currentT;
 	}
-
-	@Override
-	public void setParameters(Properties params) {
-		super.setParameters(params);
-		// TODO: timeStep, stepSize, initialState
-	}
-
-	@Override
-	public Properties getParameterDefaults() {
-		Properties params = super.getParameterDefaults();
-		// TODO: timeStep, stepSize, initialState
-		return params;
-	}
-
-	@Override
-	public Properties getParameters() {
-		Properties params = super.getParameters();
-		// TODO: timeStep, stepSize, initialState
-		return params;
-	}
-
 	
 	@Override
 	public void doStep() {
