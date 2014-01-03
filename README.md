@@ -52,6 +52,10 @@ sensitive dependence on initial conditions.
 Add support for multiple "scenarios", each of which has its own data sources and
 configuration parameters; add GUI for scenario selection. 
 
+8. Controls
+
+Adds GUI controls for setting the scenarios' parameters.
+
 --------------------------------------
 
 (The summary of Labs ends here. Remnants of an old schedule follow.)
