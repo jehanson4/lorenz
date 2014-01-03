@@ -31,6 +31,99 @@ public class PropertySheet {
 		public boolean isValid(String s);
 	}
 
+	public static class DoubleValidator implements PropertySheet.FieldValidator {
+
+		@Override
+		public boolean isValid(String s) {
+			try {
+				Double.parseDouble(s);
+				return true;
+			}
+			catch (Exception e) {
+				return false;
+			}
+		}
+	}
+
+	public static class BoundedDoubleValidator implements PropertySheet.FieldValidator {
+
+		public static final int OPEN = 0x1;
+		public static final int CLOSED = 0x2;
+
+		private final double lowerBound;
+		private final boolean lowerBoundClosed;
+
+		private final double upperBound;
+		private final boolean upperBoundClosed;
+
+		/**
+		 * @param lowerBound
+		 *            the lower bound, or Double.NEGATIVE_INFINITY
+		 * @param lowerBoundClosed
+		 *            if true, then the lower bound itself is considered valid.
+		 * @param upperBound
+		 * @param upperBoundClosed
+		 */
+		public BoundedDoubleValidator(double lowerBound, boolean lowerBoundClosed,
+				double upperBound, boolean upperBoundClosed) {
+			super();
+			this.lowerBound = lowerBound;
+			this.lowerBoundClosed = lowerBoundClosed;
+			this.upperBound = upperBound;
+			this.upperBoundClosed = upperBoundClosed;
+		}
+
+		/**
+		 * Factory method: all {x : x < bound} are valid.
+		 * @param bound
+		 * @return
+		 */
+		public static BoundedDoubleValidator lessThan(double bound) {
+			return new BoundedDoubleValidator(Double.NEGATIVE_INFINITY, false, bound, false);
+		}
+		
+		/**
+		 * Factory method: all {x : x <= bound} are valid.
+		 * @param bound
+		 * @return
+		 */
+		public static BoundedDoubleValidator lessOrEqual(double bound) {
+			return new BoundedDoubleValidator(Double.NEGATIVE_INFINITY, false, bound, true);			
+		}
+
+		/**
+		 * Factory method: all {x : x > bound} are valid.
+		 * @param bound
+		 * @return
+		 */
+		public static BoundedDoubleValidator greaterThan(double bound) {
+			return new BoundedDoubleValidator(bound, false, Double.POSITIVE_INFINITY, false);
+		}
+
+		/**
+		 * Factory method: all {x : x >= bound} are valid.
+		 * @param bound
+		 * @return
+		 */
+		public static BoundedDoubleValidator greaterOrEqual(double bound) {
+			return new BoundedDoubleValidator(bound, true, Double.POSITIVE_INFINITY, false);
+		}
+
+		@Override
+		public boolean isValid(String s) {
+			try {
+				double x = Double.parseDouble(s);
+				return !((lowerBoundClosed && x < lowerBound) ||
+					(!lowerBoundClosed && x <= lowerBound) ||
+					(upperBoundClosed && x > upperBound) ||
+					(!upperBoundClosed && x >= upperBound));
+			}
+			catch (Exception e) {
+				return false;
+			}
+		}
+	}
+
 	private class Row implements SelectionListener, FocusListener {
 
 		private final String key;
@@ -108,6 +201,8 @@ public class PropertySheet {
 	// =====================================
 	// Variables
 	// =====================================
+
+	public static final int NUMERIC_FIELD_WIDTH_HINT = 80;
 
 	private Composite control;
 	private int fieldWidthHint;

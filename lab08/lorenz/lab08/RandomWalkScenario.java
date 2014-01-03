@@ -1,11 +1,13 @@
 package lorenz.lab08;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import lorenz.lab08.PropertySheet.BoundedDoubleValidator;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -22,7 +24,10 @@ public class RandomWalkScenario extends AbstractScenario {
 	// Variables
 	// ================================
 
-	private final List<String> dsNames;
+	private static final int NUMERIC_FIELD_WIDTH = 80;
+	
+	private RandomWalker ds1;
+	private RandomWalker ds2;
 	private Composite control;
 
 	// ================================
@@ -31,7 +36,8 @@ public class RandomWalkScenario extends AbstractScenario {
 
 	public RandomWalkScenario() {
 		super();
-		dsNames = new ArrayList<String>();
+		ds1 = null;
+		ds2 = null;
 		control = null;
 	}
 
@@ -46,34 +52,69 @@ public class RandomWalkScenario extends AbstractScenario {
 			logger.logp(Level.FINE, clsName, mtdName, "enter");
 		}
 
-		DataSource ds1 = new RandomWalker();
-		dsNames.add(ds1.getName());
-		DataSource ds2 = new RandomWalker();
-		dsNames.add(ds2.getName());
+		ds1 = new RandomWalker();
+		ds2 = new RandomWalker();
 		
 		sources.add(ds1);
 		sources.add(ds2);
 
 		viewer.setDataBounds(ds1.getDataBoundsHint());
-		for (DataSource ds : sources.values()) {
-			viewer.addTimeseries(ds);
-		}
-
+		viewer.addTimeseries(ds1);
+		viewer.addTimeseries(ds2);
 	}
 
 	@Override
 	public void teardown(DataSourceContainer sources, Viewer viewer) {
-		for (String dsName : dsNames) {
+		if (ds1 != null) {
+			String dsName = ds1.getName();
 			sources.remove(dsName);
 			viewer.removeTimeseries(dsName);
+			ds1 = null;
 		}
-		dsNames.clear();
+		if (ds2 != null) {
+			String dsName = ds2.getName();
+			sources.remove(dsName);
+			viewer.removeTimeseries(dsName);
+			ds2 = null;
+		}
 	}
 
 	@Override
 	public Control buildControls(Composite parent) {
 		control = new Composite(parent, SWT.NONE);
-		// TODO
+		control.setLayout(new GridLayout(2, false));
+		
+		PropertySheet sheet = new PropertySheet();
+		sheet.setFieldWidthHint(NUMERIC_FIELD_WIDTH);
+		Control sheetControl = sheet.buildControls(control);
+		sheetControl.setLayoutData(new GridData(SWT.END, SWT.FILL, true, false, 2, 1));
+		
+		final BoundedDoubleValidator dval = BoundedDoubleValidator.greaterThan(0.);
+		sheet.addProperty("stepSize", String.valueOf(ds1.getStepSize()), dval);
+		sheet.addProperty("timeStep", String.valueOf(ds1.getTimeStep()), dval);
+		sheet.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChanged(Object source, String key, String value) {
+				final String mtdName = "propertyChanged";
+				if (logger.isLoggable(Level.FINE)) {
+					String msg = key + "=" + value;
+					logger.logp(Level.FINE, clsName, mtdName, msg);
+				}
+				if (key.equals("stepSize")) {
+					// should be safe b/c of validator
+					double x = Double.parseDouble(value);
+					ds1.setStepSize(x);
+					ds2.setStepSize(x);
+				}
+				else if (key.equals("timeStep")) {
+					// should be safe b/c of validator
+					double x = Double.parseDouble(value);
+					ds1.setTimeStep(x);
+					ds2.setTimeStep(x);
+				}
+			}
+		});
+		
 		return control;
 	}
 

@@ -31,20 +31,6 @@ public class LorenzScenario extends AbstractScenario {
 	// Inner classes
 	// ================================
 
-	private class DoubleValidator implements PropertySheet.FieldValidator {
-
-		@Override
-		public boolean isValid(String s) {
-			try {
-				Double.parseDouble(s);
-				return true;
-			}
-			catch (Exception e) {
-				return false;
-			}
-		}
-	}
-
 	private class ICListener implements PropertyChangeListener {
 		@Override
 		public void propertyChanged(Object source, String key, String value) {
@@ -143,8 +129,6 @@ public class LorenzScenario extends AbstractScenario {
 	// ================================
 
 	private static final DataPoint DEFAULT_OFFSET = new DataPoint(1E-3, 0, 0);
-	private static final int NUMERIC_FIELD_WIDTH = 80;
-
 	private final LorenzSystem sys;
 	private RungeKutta4_3D ds1;
 	private RungeKutta4_3D ds2;
@@ -232,12 +216,12 @@ public class LorenzScenario extends AbstractScenario {
 		});
 
 		// Reused in multiple property sheets below.
-		final DoubleValidator dval = new DoubleValidator();
+		final PropertySheet.DoubleValidator dval = new PropertySheet.DoubleValidator();
 
 		// ------------------------------------
 
 		coeffSheet = new PropertySheet();
-		coeffSheet.setFieldWidthHint(NUMERIC_FIELD_WIDTH);
+		coeffSheet.setFieldWidthHint(PropertySheet.NUMERIC_FIELD_WIDTH_HINT);
 		coeffSheet.addPropertyChangeListener(new CoeffListener());
 		for (Map.Entry<String, Double> entry : sys.getCoefficients().entrySet()) {
 			coeffSheet
@@ -271,7 +255,7 @@ public class LorenzScenario extends AbstractScenario {
 
 		final DataPoint ic = ds1.getInitialState();
 		icSheet = new PropertySheet();
-		icSheet.setFieldWidthHint(NUMERIC_FIELD_WIDTH);
+		icSheet.setFieldWidthHint(PropertySheet.NUMERIC_FIELD_WIDTH_HINT);
 		icSheet.addPropertyChangeListener(new ICListener());
 		icSheet.addProperty("x", String.valueOf(ic.getX()), dval);
 		icSheet.addProperty("y", String.valueOf(ic.getY()), dval);
@@ -303,7 +287,7 @@ public class LorenzScenario extends AbstractScenario {
 		// ------------------------------------
 
 		offsetSheet = new PropertySheet();
-		offsetSheet.setFieldWidthHint(NUMERIC_FIELD_WIDTH);
+		offsetSheet.setFieldWidthHint(PropertySheet.NUMERIC_FIELD_WIDTH_HINT);
 		offsetSheet.addPropertyChangeListener(new OffsetListener());
 		offsetSheet.addProperty("x", String.valueOf(offset.getX()), dval);
 		offsetSheet.addProperty("y", String.valueOf(offset.getY()), dval);

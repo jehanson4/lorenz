@@ -1,6 +1,5 @@
 package lorenz.lab08;
 
-import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -76,6 +75,22 @@ public class RandomWalker extends DataSource {
 	@Override
 	public DataBox getDataBoundsHint() {
 		return new DataBox(bounds);
+	}
+
+	public double getStepSize() {
+		return this.stepSize;
+	}
+
+	public void setStepSize(double stepSize) {
+		this.stepSize = stepSize;
+	}
+
+	public double getTimeStep() {
+		return this.timeStep;
+	}
+
+	public void setTimeStep(double timeStep) {
+		this.timeStep = timeStep;
 	}
 
 	@Override
