@@ -56,6 +56,10 @@ configuration parameters; add GUI for scenario selection.
 
 Adds GUI controls for setting the scenarios' parameters.
 
+9. More scenarios
+
+Adds new types of data source, and a scenario for each.
+
 --------------------------------------
 
 (The summary of Labs ends here. Remnants of an old schedule follow.)
