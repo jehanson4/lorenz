@@ -15,17 +15,15 @@ import org.eclipse.swt.widgets.Control;
  * 
  * @author jehanson
  */
-public class RandomWalkScenario extends AbstractScenario {
+public class RandomWalkerScenario extends AbstractScenario {
 
-	private static final String clsName = RandomWalkScenario.class.getName();
+	private static final String clsName = RandomWalkerScenario.class.getName();
 	private static final Logger logger = Logger.getLogger(clsName);
 
 	// ================================
 	// Variables
 	// ================================
 
-	private static final int NUMERIC_FIELD_WIDTH = 80;
-	
 	private RandomWalker ds1;
 	private RandomWalker ds2;
 	private Composite control;
@@ -34,7 +32,7 @@ public class RandomWalkScenario extends AbstractScenario {
 	// Creation
 	// ================================
 
-	public RandomWalkScenario() {
+	public RandomWalkerScenario() {
 		super();
 		ds1 = null;
 		ds2 = null;
@@ -85,7 +83,7 @@ public class RandomWalkScenario extends AbstractScenario {
 		control.setLayout(new GridLayout(2, false));
 		
 		PropertySheet sheet = new PropertySheet();
-		sheet.setFieldWidthHint(NUMERIC_FIELD_WIDTH);
+		sheet.setFieldWidthHint(PropertySheet.NUMERIC_FIELD_WIDTH_HINT);
 		Control sheetControl = sheet.buildControls(control);
 		sheetControl.setLayoutData(new GridData(SWT.END, SWT.FILL, true, false, 2, 1));
 		

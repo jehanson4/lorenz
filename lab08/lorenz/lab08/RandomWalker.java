@@ -17,6 +17,9 @@ public class RandomWalker extends DataSource {
 	// Variables
 	// =============================================
 
+	private static final double DEFAULT_STEP_SIZE = 0.01;
+	private static final double DEFAULT_TIME_STEP = 1E-3;
+	
 	private DataPoint initialState;
 	private final Random rng;
 	private DataBox bounds;
@@ -54,8 +57,8 @@ public class RandomWalker extends DataSource {
 		this.initialState = initialState;
 		this.bounds = new DataBox(initialState, 2.0);
 		this.rng = new Random();
-		this.stepSize = 0.01;
-		this.timeStep = 1E-4;
+		this.stepSize = DEFAULT_STEP_SIZE;
+		this.timeStep = DEFAULT_TIME_STEP;
 		this.currentX = initialState.getX();
 		this.currentY = initialState.getY();
 		this.currentZ = initialState.getZ();

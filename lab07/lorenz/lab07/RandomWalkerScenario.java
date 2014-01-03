@@ -12,9 +12,9 @@ import org.eclipse.swt.widgets.Control;
  * 
  * @author jehanson
  */
-public class RandomWalkScenario implements Scenario {
+public class RandomWalkerScenario implements Scenario {
 
-	private static final String clsName = RandomWalkScenario.class.getName();
+	private static final String clsName = RandomWalkerScenario.class.getName();
 	private static final Logger logger = Logger.getLogger(clsName);
 
 	// ================================
@@ -27,7 +27,7 @@ public class RandomWalkScenario implements Scenario {
 	// Creation
 	// ================================
 
-	public RandomWalkScenario() {
+	public RandomWalkerScenario() {
 		super();
 		dsNames = new ArrayList<String>();
 	}
