@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import lorenz.lab09.PropertySheet.DoubleValidator;
+import lorenz.lab09.Viewer.Timeseries;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -21,9 +22,9 @@ import org.eclipse.swt.widgets.Label;
  * 
  * @author jehanson
  */
-public class LorenzScenario extends AbstractScenario {
+public class PendulumScenario extends AbstractScenario {
 
-	private static final String clsName = LorenzScenario.class.getName();
+	private static final String clsName = PendulumScenario.class.getName();
 	private static final Logger logger = Logger.getLogger(clsName);
 
 	// ================================
@@ -128,7 +129,7 @@ public class LorenzScenario extends AbstractScenario {
 	// ================================
 
 	private static final DataPoint OFFSET_DEFAULT = new DataPoint(1E-3, 0, 0);
-	private final LorenzSystem sys;
+	private final PendulumSystem sys;
 	private RungeKutta4_3D ds1;
 	private RungeKutta4_3D ds2;
 	private DataPoint offset;
@@ -141,9 +142,9 @@ public class LorenzScenario extends AbstractScenario {
 	// Creation
 	// ================================
 
-	public LorenzScenario() {
+	public PendulumScenario() {
 		super();
-		sys = new LorenzSystem();
+		sys = new PendulumSystem();
 		ds1 = null;
 		offset = OFFSET_DEFAULT;
 		cpane = null;
@@ -201,8 +202,10 @@ public class LorenzScenario extends AbstractScenario {
 		sources.add(ds2);
 
 		viewer.setDataBounds(sys.getDataBoundsHint());
-		viewer.addTimeseries(ds1);
-		viewer.addTimeseries(ds2);
+		Timeseries ts1 = viewer.addTimeseries(ds1);
+		ts1.setMaxHistory(1.0);
+		Timeseries ts2 = viewer.addTimeseries(ds2);
+		ts2.setMaxHistory(1.0);
 	}
 
 	@Override

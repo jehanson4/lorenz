@@ -35,11 +35,15 @@ public class Viewer {
 	// ==================================
 
 	public interface Timeseries {
-		public String getName();
+		public abstract String getName();
 
-		public Color getColor();
+		public abstract Color getColor();
 
-		public void setColor(Color c);
+		public abstract void setColor(Color c);
+
+		public abstract double getMaxHistory();
+
+		public abstract void setMaxHistory(double maxHistory);
 	}
 
 	private final class TimeseriesImpl implements Timeseries, DataSourceListener {
@@ -76,6 +80,16 @@ public class Viewer {
 		@Override
 		public void setColor(Color c) {
 			pointColor = c;
+		}
+
+		@Override
+		public double getMaxHistory() {
+			return this.maxHistory;
+		}
+
+		@Override
+		public void setMaxHistory(double maxHistory) {
+			this.maxHistory = maxHistory;
 		}
 
 		@Override
@@ -219,7 +233,7 @@ public class Viewer {
 	public Timeseries getTimeseries(String name) {
 		return timeseriesMap.get(name);
 	}
-	
+
 	public void removeTimeseries(String name) {
 		TimeseriesImpl ts = timeseriesMap.remove(name);
 		if (ts != null)
@@ -234,7 +248,7 @@ public class Viewer {
 
 		// ensure colors of already-added timeseries are not null.
 		int idx = 0;
-		for (TimeseriesImpl ts : timeseriesMap.values()) {
+		for (Timeseries ts : timeseriesMap.values()) {
 			assignDefaultColor(ts, idx++);
 		}
 

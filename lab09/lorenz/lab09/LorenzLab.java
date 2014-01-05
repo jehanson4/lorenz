@@ -73,7 +73,7 @@ public class LorenzLab {
 		this.viewer = new Viewer();
 		this.controller = new Controller(sources, viewer);
 		this.controller.addScenario("Lorenz", new LorenzScenario());
-		// this.controller.addScenario("Pendulum", new PendulumScenario());
+		this.controller.addScenario("Pendulum", new PendulumScenario());
 		this.controller.addScenario("RandomWalker", new RandomWalkerScenario());
 		this.controller.addScenario("RandomFlier", new RandomFlierScenario());
 	}
