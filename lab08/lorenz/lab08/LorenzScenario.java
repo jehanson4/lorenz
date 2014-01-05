@@ -75,23 +75,23 @@ public class LorenzScenario extends AbstractScenario {
 				logger.logp(Level.FINE, clsName, mtdName, key + "=" + value);
 			}
 
-			double x = offset.getX();
-			double y = offset.getY();
-			double z = offset.getZ();
-			if (key.equals("x")) {
+			double dx = offset.getX();
+			double dy = offset.getY();
+			double dz = offset.getZ();
+			if (key.equals("dx")) {
 				// should be safe b/c of field validator
-				x = Double.parseDouble(value);
+				dx = Double.parseDouble(value);
 			}
-			else if (key.equals("y")) {
+			else if (key.equals("dy")) {
 				// should be safe b/c of field validator
-				y = Double.parseDouble(value);
+				dy = Double.parseDouble(value);
 			}
-			else if (key.equals("z")) {
+			else if (key.equals("dz")) {
 				// should be safe b/c of field validator
-				z = Double.parseDouble(value);
+				dz = Double.parseDouble(value);
 			}
 
-			offset = new DataPoint(x, y, z);
+			offset = new DataPoint(dx, dy, dz);
 			ds2.setInitialState(ds1.getInitialState().add(offset));
 
 			if (logger.isLoggable(Level.FINE)) {
@@ -225,145 +225,6 @@ public class LorenzScenario extends AbstractScenario {
 
 	@Override
 	public Control buildControls(Composite parent) {
-		return buildControls2(parent);
-	}
-
-// public Control buildControls1(Composite parent) {
-//
-// final String mtdName = "buildControls";
-// if (logger.isLoggable(Level.FINE))
-// logger.logp(Level.FINE, clsName, mtdName, "enter");
-//
-// // Reused in multiple property sheets below.
-// final PropertySheet.DoubleValidator anyDouble =
-// new PropertySheet.DoubleValidator();
-// final PropertySheet.DoubleValidator posDouble =
-// PropertySheet.DoubleValidator.greaterThan(0.);
-//
-//
-// bar = new ExpandBar(parent, SWT.V_SCROLL);
-// bar.addExpandListener(new ExpandListener() {
-// @Override
-// public void itemCollapsed(ExpandEvent e) {}
-//
-// @Override
-// public void itemExpanded(ExpandEvent e) {
-// for (ExpandItem ii : bar.getItems()) {
-// if (ii != e.item) {
-// ii.setExpanded(false);
-// }
-// }
-// }
-// });
-//
-// // ------------------------------------
-//
-// sysSheet = new PropertySheet();
-// sysSheet.setFieldWidthHint(PropertySheet.NUMERIC_FIELD_WIDTH_HINT);
-// sysSheet.addPropertyChangeListener(new CoeffListener());
-// for (Map.Entry<String, Double> entry : sys.getCoefficients().entrySet()) {
-// sysSheet.addProperty(entry.getKey(), String.valueOf(entry.getValue()),
-// anyDouble);
-// sysSheet.addProperty("timeStep", String.valueOf(getTimeStep()), posDouble);
-// }
-//
-// Composite coeffPane = new Composite(bar, SWT.NONE);
-// coeffPane.setLayout(new GridLayout(2, false));
-// Control coeffControl = sysSheet.buildControls(coeffPane);
-// coeffControl.setLayoutData(new GridData(SWT.END, SWT.FILL, true, false, 2,
-// 1));
-// Button coeffReset = new Button(coeffPane, SWT.PUSH);
-// coeffReset.setText("Reset to Defaults");
-// coeffReset.setLayoutData(new GridData(SWT.END, SWT.CENTER, false, false, 2,
-// 1));
-// coeffReset.addSelectionListener(new SelectionAdapter() {
-// @Override
-// public void widgetSelected(SelectionEvent e) {
-// Map<String, Double> newCoeffs = sys.getCoefficientsHint();
-// sys.setCoefficients(newCoeffs);
-// for (Map.Entry<String, Double> entry : newCoeffs.entrySet()) {
-// sysSheet.setProperty(entry.getKey(), String.valueOf(entry.getValue()));
-// }
-// }
-// });
-// ExpandItem coeffItem = new ExpandItem(bar, SWT.NONE);
-// coeffItem.setText("Lorenz System Coefficients");
-// coeffItem.setHeight(coeffPane.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-// coeffItem.setControl(coeffPane);
-//
-// // ------------------------------------
-//
-// final DataPoint ic = ds1.getInitialState();
-// icSheet = new PropertySheet();
-// icSheet.setFieldWidthHint(PropertySheet.NUMERIC_FIELD_WIDTH_HINT);
-// icSheet.addPropertyChangeListener(new ICListener());
-// icSheet.addProperty("x", String.valueOf(ic.getX()), anyDouble);
-// icSheet.addProperty("y", String.valueOf(ic.getY()), anyDouble);
-// icSheet.addProperty("z", String.valueOf(ic.getZ()), anyDouble);
-//
-// Composite icPane = new Composite(bar, SWT.NONE);
-// icPane.setLayout(new GridLayout(2, false));
-// Control icControl = icSheet.buildControls(icPane);
-// icControl.setLayoutData(new GridData(SWT.END, SWT.FILL, true, false, 2, 1));
-// Button icReset = new Button(icPane, SWT.PUSH);
-// icReset.setText("Reset to Defaults");
-// icReset.setLayoutData(new GridData(SWT.END, SWT.CENTER, false, false, 2, 1));
-// icReset.addSelectionListener(new SelectionAdapter() {
-// @Override
-// public void widgetSelected(SelectionEvent e) {
-// DataPoint ic = sys.getInitialStateHint();
-// ds1.setInitialState(ic);
-// ds2.setInitialState(ic.add(offset));
-// icSheet.setProperty("x", String.valueOf(ic.getX()));
-// icSheet.setProperty("y", String.valueOf(ic.getY()));
-// icSheet.setProperty("z", String.valueOf(ic.getZ()));
-// }
-// });
-// ExpandItem icItem = new ExpandItem(bar, SWT.NONE);
-// icItem.setText("Initial Conditions");
-// icItem.setHeight(icPane.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-// icItem.setControl(icPane);
-//
-// // ------------------------------------
-//
-// offsetSheet = new PropertySheet();
-// offsetSheet.setFieldWidthHint(PropertySheet.NUMERIC_FIELD_WIDTH_HINT);
-// offsetSheet.addPropertyChangeListener(new OffsetListener());
-// offsetSheet.addProperty("x", String.valueOf(offset.getX()), anyDouble);
-// offsetSheet.addProperty("y", String.valueOf(offset.getY()), anyDouble);
-// offsetSheet.addProperty("z", String.valueOf(offset.getZ()), anyDouble);
-//
-// Composite offsetPane = new Composite(bar, SWT.NONE);
-// offsetPane.setLayout(new GridLayout(2, false));
-// Control offsetControl = offsetSheet.buildControls(offsetPane);
-// offsetControl.setLayoutData(new GridData(SWT.END, SWT.FILL, true, false, 2,
-// 1));
-// Button offsetReset = new Button(offsetPane, SWT.PUSH);
-// offsetReset.setText("Reset to Defaults");
-// offsetReset.setLayoutData(new GridData(SWT.END, SWT.CENTER, false, false, 2,
-// 1));
-// offsetReset.addSelectionListener(new SelectionAdapter() {
-// @Override
-// public void widgetSelected(SelectionEvent e) {
-// offset = DEFAULT_OFFSET;
-// ds2.setInitialState(ds1.getInitialState().add(offset));
-// offsetSheet.setProperty("x", String.valueOf(offset.getX()));
-// offsetSheet.setProperty("y", String.valueOf(offset.getY()));
-// offsetSheet.setProperty("z", String.valueOf(offset.getZ()));
-// }
-// });
-// ExpandItem offsetItem = new ExpandItem(bar, SWT.NONE);
-// offsetItem.setText("Initial offset in 2nd timseries");
-// offsetItem.setHeight(offsetPane.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-// offsetItem.setControl(offsetPane);
-//
-// // ------------------------------------
-//
-// return bar;
-// }
-
-	public Control buildControls2(Composite parent) {
-
 		final String mtdName = "buildControls";
 		if (logger.isLoggable(Level.FINE))
 			logger.logp(Level.FINE, clsName, mtdName, "enter");
