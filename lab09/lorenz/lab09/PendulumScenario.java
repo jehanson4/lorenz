@@ -128,7 +128,7 @@ public class PendulumScenario extends AbstractScenario {
 	// Variables
 	// ================================
 
-	private static final DataPoint OFFSET_DEFAULT = new DataPoint(1E-3, 0, 0);
+	private static final DataPoint OFFSET_DEFAULT = new DataPoint(0.02, 0, 0.02);
 	private final PendulumSystem sys;
 	private RungeKutta4_3D ds1;
 	private RungeKutta4_3D ds2;

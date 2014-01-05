@@ -30,7 +30,7 @@ public class PendulumSystem implements ODESystem_3D {
 
 			dpdt[0] = p[2];
 			dpdt[1] = 0;
-			dpdt[2] = minusGOverL * Math.sin(p[0]);
+			dpdt[2] = minusGOverR * Math.sin(p[0]);
 		}
 	}
 
@@ -49,14 +49,15 @@ public class PendulumSystem implements ODESystem_3D {
 			// * phiDot
 			// *
 			// * d(theta)/dt = thetaDot
-			// * d(thetaDot)/dt = sin(theta)*cos(theta)*phiDot^2 - g/L*sin(theta)
+			// * d(thetaDot)/dt = sin(theta)*cos(theta)*phiDot^2 -
+// g/L*sin(theta)
 			// from
 			// m * L^2 * (sin(theta))^2 * phiDot = const
 			// we get:
 			// phiDot = gamma / (sin(theta))^2
 			// so therefore
 			// d(thetaDot)/dt = sin(theta)*cos(theta)*(gamma/(sin(theta))^2)^2
-			
+
 			// * d(phiDot)/dt = 0
 			// *
 			// * FOr phiDot = 0, we simplify:
@@ -77,21 +78,18 @@ public class PendulumSystem implements ODESystem_3D {
 	// Variables
 	// =====================================
 
-	private static final double DEFAULT_L = 1;
+	private static final double DEFAULT_R = 1;
 	private static final double DEFAULT_G = 9.8;
-	private static final double DEFAULT_GAMMA = 0;
+	private static final double DEFAULT_LAMBDA = 0;
 
-	// x = theta => PI/2
-	// y = phi => 0
-	// z = thetaDot => -0.5
-	private static final DataPoint DEFAULT_IC = new DataPoint(Math.PI / 2, 0, -0.5);
+	private static final DataPoint DEFAULT_IC = new DataPoint(7. * Math.PI / 8., 0, 0);
 
-	private double L; // length of pendumum's arm
-	private double g; // gravity
-	private double gamma; // rotational coefficient: if 0, motion is planer
+	private double r; // length of pendumum's arm
+	private double g; // gravitational acceleration
+	private double lambda; // proportional to angular momentum; if 0, motion is planar
 
 	private InnerODE innerODE;
-	private double minusGOverL;
+	private double minusGOverR;
 
 	// =====================================
 	// Creation
@@ -99,7 +97,7 @@ public class PendulumSystem implements ODESystem_3D {
 
 	public PendulumSystem() {
 		super();
-		setParams(DEFAULT_L, DEFAULT_G, DEFAULT_GAMMA);
+		setParams(DEFAULT_R, DEFAULT_G, DEFAULT_LAMBDA);
 	}
 
 	// =====================================
@@ -125,18 +123,18 @@ public class PendulumSystem implements ODESystem_3D {
 	@Override
 	public Map<String, Double> getCoefficients() {
 		Map<String, Double> coeffs = new HashMap<String, Double>();
-		coeffs.put("L", Double.valueOf(L));
+		coeffs.put("r", Double.valueOf(r));
 		coeffs.put("g", Double.valueOf(g));
-		coeffs.put("gamma", Double.valueOf(gamma));
+		coeffs.put("lambda", Double.valueOf(lambda));
 		return coeffs;
 	}
 
 	@Override
 	public Map<String, Double> getCoefficientsHint() {
 		Map<String, Double> coeffs = new HashMap<String, Double>();
-		coeffs.put("L", Double.valueOf(DEFAULT_L));
+		coeffs.put("r", Double.valueOf(DEFAULT_R));
 		coeffs.put("g", Double.valueOf(DEFAULT_G));
-		coeffs.put("gamma", Double.valueOf(DEFAULT_GAMMA));
+		coeffs.put("lambda", Double.valueOf(DEFAULT_LAMBDA));
 		return coeffs;
 	}
 
@@ -144,16 +142,16 @@ public class PendulumSystem implements ODESystem_3D {
 	public void setCoefficients(Map<String, Double> coefficients) {
 		Double vv;
 
-		vv = coefficients.get("L");
-		double L2 = (vv == null) ? L : vv.doubleValue();
+		vv = coefficients.get("r");
+		double r2 = (vv == null) ? r : vv.doubleValue();
 
 		vv = coefficients.get("g");
 		double g2 = (vv == null) ? g : vv.doubleValue();
 
-		vv = coefficients.get("gamma");
-		double gamma2 = (vv == null) ? gamma : vv.doubleValue();
+		vv = coefficients.get("lambda");
+		double lambda2 = (vv == null) ? lambda : vv.doubleValue();
 
-		setParams(L2, g2, gamma2);
+		setParams(r2, g2, lambda2);
 	}
 
 	@Override
@@ -165,12 +163,12 @@ public class PendulumSystem implements ODESystem_3D {
 	// Private
 	// ===========================
 
-	private void setParams(double L, double g, double gamma) {
-		this.L = L;
+	private void setParams(double r, double g, double lambda) {
+		this.r = r;
 		this.g = g;
-		this.gamma = gamma;
+		this.lambda = lambda;
 
-		this.minusGOverL = -g / L;
-		this.innerODE = (gamma == 0) ? new PlanarCase() : new GeneralCase();
+		this.minusGOverR = -g / r;
+		this.innerODE = (lambda == 0) ? new PlanarCase() : new GeneralCase();
 	}
 }
