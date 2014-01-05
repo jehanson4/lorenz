@@ -1,6 +1,6 @@
 package lorenz.lab08;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,7 +60,7 @@ public class LorenzSystem implements ODESystem_3D {
 			String msg = "entering";
 			logger.logp(Level.FINE, clsName, mtdName, msg);
 		}
-		Map<String, Double> coeffs = new HashMap<String, Double>();
+		Map<String, Double> coeffs = new LinkedHashMap<String, Double>();
 		coeffs.put(SIGMA_KEY, Double.valueOf(this.sigma));
 		coeffs.put(RHO_KEY, Double.valueOf(this.rho));
 		coeffs.put(BETA_KEY, Double.valueOf(this.beta));
@@ -74,7 +74,7 @@ public class LorenzSystem implements ODESystem_3D {
 			String msg = "entering";
 			logger.logp(Level.FINE, clsName, mtdName, msg);
 		}
-		Map<String, Double> coeffs = new HashMap<String, Double>();
+		Map<String, Double> coeffs = new LinkedHashMap<String, Double>();
 		coeffs.put(SIGMA_KEY, Double.valueOf(DEFAULT_SIGMA));
 		coeffs.put(RHO_KEY, Double.valueOf(DEFAULT_RHO));
 		coeffs.put(BETA_KEY, Double.valueOf(DEFAULT_BETA));

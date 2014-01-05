@@ -36,7 +36,7 @@ public class LorenzLab {
 		Display display = new Display();
 		Shell shell = new Shell(display, SWT.SHELL_TRIM);
 		shell.setText(LorenzLab.class.getSimpleName());
-		shell.setSize(600, 300);
+		shell.setSize(800, 600);
 		shell.setLayout(new GridLayout(2, false));
 
 		LorenzLab llab = new LorenzLab();

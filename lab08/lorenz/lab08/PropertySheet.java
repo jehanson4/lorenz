@@ -28,31 +28,24 @@ public class PropertySheet {
 	// =====================================
 
 	public interface FieldValidator {
-		public boolean isValid(String s);
+		// TODO: better exception class.
+		public void validate(String s) throws IllegalArgumentException;
 	}
 
-	public static class DoubleValidator implements PropertySheet.FieldValidator {
+	public static class DefaultValidator implements PropertySheet.FieldValidator {
 
+		public static final DefaultValidator instance = new DefaultValidator();
+		
 		@Override
-		public boolean isValid(String s) {
-			try {
-				Double.parseDouble(s);
-				return true;
-			}
-			catch (Exception e) {
-				return false;
-			}
-		}
+		public void validate(String s) throws IllegalArgumentException {
+			// NOP
+		}		
 	}
-
-	public static class BoundedDoubleValidator implements PropertySheet.FieldValidator {
-
-		public static final int OPEN = 0x1;
-		public static final int CLOSED = 0x2;
+	
+	public static class DoubleValidator implements PropertySheet.FieldValidator {
 
 		private final double lowerBound;
 		private final boolean lowerBoundClosed;
-
 		private final double upperBound;
 		private final boolean upperBoundClosed;
 
@@ -64,7 +57,7 @@ public class PropertySheet {
 		 * @param upperBound
 		 * @param upperBoundClosed
 		 */
-		public BoundedDoubleValidator(double lowerBound, boolean lowerBoundClosed,
+		public DoubleValidator(double lowerBound, boolean lowerBoundClosed,
 				double upperBound, boolean upperBoundClosed) {
 			super();
 			this.lowerBound = lowerBound;
@@ -74,53 +67,77 @@ public class PropertySheet {
 		}
 
 		/**
+		 * Factory method: all x are valid.
+		 * 
+		 * @return
+		 */
+		public static DoubleValidator any() {
+			return new DoubleValidator(Double.NEGATIVE_INFINITY, false, Double.POSITIVE_INFINITY, false);
+		}
+
+		/**
 		 * Factory method: all {x : x < bound} are valid.
+		 * 
 		 * @param bound
 		 * @return
 		 */
-		public static BoundedDoubleValidator lessThan(double bound) {
-			return new BoundedDoubleValidator(Double.NEGATIVE_INFINITY, false, bound, false);
+		public static DoubleValidator lessThan(double bound) {
+			return new DoubleValidator(Double.NEGATIVE_INFINITY, false, bound, false);
 		}
-		
+
 		/**
 		 * Factory method: all {x : x <= bound} are valid.
+		 * 
 		 * @param bound
 		 * @return
 		 */
-		public static BoundedDoubleValidator lessOrEqual(double bound) {
-			return new BoundedDoubleValidator(Double.NEGATIVE_INFINITY, false, bound, true);			
+		public static DoubleValidator lessOrEqual(double bound) {
+			return new DoubleValidator(Double.NEGATIVE_INFINITY, false, bound, true);
 		}
 
 		/**
 		 * Factory method: all {x : x > bound} are valid.
+		 * 
 		 * @param bound
 		 * @return
 		 */
-		public static BoundedDoubleValidator greaterThan(double bound) {
-			return new BoundedDoubleValidator(bound, false, Double.POSITIVE_INFINITY, false);
+		public static DoubleValidator greaterThan(double bound) {
+			return new DoubleValidator(bound, false, Double.POSITIVE_INFINITY, false);
 		}
 
 		/**
 		 * Factory method: all {x : x >= bound} are valid.
+		 * 
 		 * @param bound
 		 * @return
 		 */
-		public static BoundedDoubleValidator greaterOrEqual(double bound) {
-			return new BoundedDoubleValidator(bound, true, Double.POSITIVE_INFINITY, false);
+		public static DoubleValidator greaterOrEqual(double bound) {
+			return new DoubleValidator(bound, true, Double.POSITIVE_INFINITY, false);
 		}
 
 		@Override
-		public boolean isValid(String s) {
+		public void validate(String s) {
+			if (s == null)
+				throw new IllegalArgumentException("Bad value: cannot be null");
+			
+			final double x;
 			try {
-				double x = Double.parseDouble(s);
-				return !((lowerBoundClosed && x < lowerBound) ||
-					(!lowerBoundClosed && x <= lowerBound) ||
-					(upperBoundClosed && x > upperBound) ||
-					(!upperBoundClosed && x >= upperBound));
+				 x = Double.parseDouble(s);
 			}
-			catch (Exception e) {
-				return false;
+			catch (NumberFormatException e) {
+				throw new IllegalArgumentException("Bad value \"" + s + "\": must be parseable to double");
 			}
+
+			if (Double.isNaN(x))
+				throw new IllegalArgumentException("Bad value (" + x + "): must be a number");
+			if (lowerBoundClosed && !(x >= lowerBound))
+				throw new IllegalArgumentException("Bad value (" + x + "): must be >= " + lowerBound);
+			if (!lowerBoundClosed && !(x > lowerBound))
+				throw new IllegalArgumentException("Bad value (" + x + "): must be > " + lowerBound);
+			if (upperBoundClosed && !(x <= upperBound))
+				throw new IllegalArgumentException("Bad value (" + x + "): must be <= " + upperBound);
+			if (!upperBoundClosed && !(x < upperBound))
+				throw new IllegalArgumentException("Bad value (" + x + "): must be < " + upperBound);
 		}
 	}
 
@@ -136,7 +153,7 @@ public class PropertySheet {
 			super();
 			this.key = key;
 			this.value = value;
-			this.validator = validator;
+			this.validator = (validator == null) ? DefaultValidator.instance : validator;
 			this.editable = editable;
 			this.field = null;
 		}
@@ -161,6 +178,7 @@ public class PropertySheet {
 		}
 
 		public void setValue(String v) {
+			validator.validate(v); // No manual override.
 			this.value = v;
 			if (field != null && !field.isDisposed()) {
 				field.setText(v);
@@ -188,12 +206,16 @@ public class PropertySheet {
 			if (value.equals(v2)) {
 				// NOP
 			}
-			else if (validator != null && !validator.isValid(v2)) {
-				field.setText(value);
-			}
 			else {
-				value = v2;
-				firePropertyChange(key, value);
+				try {
+					validator.validate(v2);
+					value = v2;
+					firePropertyChange(key, value);
+				}
+				catch (Exception e) {
+					// reset field to current value.
+					field.setText(value);
+				}
 			}
 		}
 	}

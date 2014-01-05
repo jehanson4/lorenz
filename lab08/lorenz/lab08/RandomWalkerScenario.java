@@ -3,8 +3,6 @@ package lorenz.lab08;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import lorenz.lab08.PropertySheet.BoundedDoubleValidator;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -87,9 +85,9 @@ public class RandomWalkerScenario extends AbstractScenario {
 		Control sheetControl = sheet.buildControls(control);
 		sheetControl.setLayoutData(new GridData(SWT.END, SWT.FILL, true, false, 2, 1));
 		
-		final BoundedDoubleValidator dval = BoundedDoubleValidator.greaterThan(0.);
-		sheet.addProperty("stepSize", String.valueOf(ds1.getStepSize()), dval);
-		sheet.addProperty("timeStep", String.valueOf(ds1.getTimeStep()), dval);
+		final PropertySheet.DoubleValidator posDouble = PropertySheet.DoubleValidator.greaterThan(0.);
+		sheet.addProperty("stepSize", String.valueOf(ds1.getStepSize()), posDouble);
+		sheet.addProperty("timeStep", String.valueOf(ds1.getTimeStep()), posDouble);
 		sheet.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChanged(Object source, String key, String value) {
