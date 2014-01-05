@@ -22,7 +22,7 @@ public class RungeKutta4_3D extends DataSource {
 	// Variables
 	// =============================================
 
-	private static final double DEFAULT_TIME_STEP = 0.001;
+	private static final double TIME_STEP_DEFAULT = 0.001;
 	
 	private final ODESystem_3D odeSystem;
 	private DataPoint initialState;
@@ -54,7 +54,7 @@ public class RungeKutta4_3D extends DataSource {
 
 		this.odeSystem = odeSystem;
 		this.initialState = initialState;
-		this.timeStep = DEFAULT_TIME_STEP;
+		this.timeStep = TIME_STEP_DEFAULT;
 		this.currP = new double[3];
 		
 		// (OK to call this in ctor b/c it's final)
@@ -87,6 +87,10 @@ public class RungeKutta4_3D extends DataSource {
 		return this.timeStep;
 	}
 
+	public double getTimeStepDefault() {
+		return TIME_STEP_DEFAULT;
+	}
+	
 	public void setTimeStep(double timeStep) {
 		this.timeStep = timeStep;
 	}

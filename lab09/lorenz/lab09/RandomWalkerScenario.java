@@ -3,8 +3,6 @@ package lorenz.lab09;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import lorenz.lab09.PropertySheet.BoundedDoubleValidator;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -52,7 +50,7 @@ public class RandomWalkerScenario extends AbstractScenario {
 
 		ds1 = new RandomWalker();
 		ds2 = new RandomWalker();
-
+		
 		sources.add(ds1);
 		sources.add(ds2);
 
@@ -81,15 +79,15 @@ public class RandomWalkerScenario extends AbstractScenario {
 	public Control buildControls(Composite parent) {
 		control = new Composite(parent, SWT.NONE);
 		control.setLayout(new GridLayout(2, false));
-
+		
 		PropertySheet sheet = new PropertySheet();
 		sheet.setFieldWidthHint(PropertySheet.NUMERIC_FIELD_WIDTH_HINT);
 		Control sheetControl = sheet.buildControls(control);
 		sheetControl.setLayoutData(new GridData(SWT.END, SWT.FILL, true, false, 2, 1));
-
-		final BoundedDoubleValidator dval = BoundedDoubleValidator.greaterThan(0.);
-		sheet.addProperty("stepSize", String.valueOf(ds1.getStepSize()), dval);
-		sheet.addProperty("timeStep", String.valueOf(ds1.getTimeStep()), dval);
+		
+		final PropertySheet.DoubleValidator posDouble = PropertySheet.DoubleValidator.greaterThan(0.);
+		sheet.addProperty("stepSize", String.valueOf(ds1.getStepSize()), posDouble);
+		sheet.addProperty("timeStep", String.valueOf(ds1.getTimeStep()), posDouble);
 		sheet.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChanged(Object source, String key, String value) {
@@ -112,7 +110,7 @@ public class RandomWalkerScenario extends AbstractScenario {
 				}
 			}
 		});
-
+		
 		return control;
 	}
 

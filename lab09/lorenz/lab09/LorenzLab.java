@@ -36,7 +36,7 @@ public class LorenzLab {
 		Display display = new Display();
 		Shell shell = new Shell(display, SWT.SHELL_TRIM);
 		shell.setText(LorenzLab.class.getSimpleName());
-		shell.setSize(600, 300);
+		shell.setSize(800, 600);
 		shell.setLayout(new GridLayout(2, false));
 
 		LorenzLab llab = new LorenzLab();
@@ -73,6 +73,7 @@ public class LorenzLab {
 		this.viewer = new Viewer();
 		this.controller = new Controller(sources, viewer);
 		this.controller.addScenario("Lorenz", new LorenzScenario());
+		// this.controller.addScenario("Pendulum", new PendulumScenario());
 		this.controller.addScenario("RandomWalker", new RandomWalkerScenario());
 		this.controller.addScenario("RandomFlier", new RandomFlierScenario());
 	}

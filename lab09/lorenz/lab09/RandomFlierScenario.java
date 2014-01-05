@@ -3,7 +3,7 @@ package lorenz.lab09;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import lorenz.lab09.PropertySheet.BoundedDoubleValidator;
+import lorenz.lab09.PropertySheet.DoubleValidator;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -87,10 +87,10 @@ public class RandomFlierScenario extends AbstractScenario {
 		Control sheetControl = sheet.buildControls(control);
 		sheetControl.setLayoutData(new GridData(SWT.END, SWT.FILL, true, false, 2, 1));
 
-		final BoundedDoubleValidator dval = BoundedDoubleValidator.greaterThan(0.);
-		sheet.addProperty("pulseSize", String.valueOf(ds1.getPulseSize()), dval);
-		sheet.addProperty("timeStep", String.valueOf(ds1.getTimeStep()), dval);
-		sheet.addProperty("vMax", String.valueOf(ds1.getVMax()), dval);
+		final DoubleValidator posDouble = DoubleValidator.greaterThan(0.);
+		sheet.addProperty("pulseSize", String.valueOf(ds1.getPulseSize()), posDouble);
+		sheet.addProperty("timeStep", String.valueOf(ds1.getTimeStep()), posDouble);
+		sheet.addProperty("vMax", String.valueOf(ds1.getVMax()), posDouble);
 		sheet.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChanged(Object source, String key, String value) {
