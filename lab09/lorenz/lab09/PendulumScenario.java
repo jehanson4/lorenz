@@ -43,15 +43,15 @@ public class PendulumScenario extends AbstractScenario {
 			double x = ic1.getX();
 			double y = ic1.getY();
 			double z = ic1.getZ();
-			if (key.equals("x")) {
+			if (key.equals(IC_LABEL_X)) {
 				// should be safe b/c of field validator
 				x = Double.parseDouble(value);
 			}
-			else if (key.equals("y")) {
+			else if (key.equals(IC_LABEL_Y)) {
 				// should be safe b/c of field validator
 				y = Double.parseDouble(value);
 			}
-			else if (key.equals("z")) {
+			else if (key.equals(IC_LABEL_Z)) {
 				// should be safe b/c of field validator
 				z = Double.parseDouble(value);
 			}
@@ -79,15 +79,15 @@ public class PendulumScenario extends AbstractScenario {
 			double dx = offset.getX();
 			double dy = offset.getY();
 			double dz = offset.getZ();
-			if (key.equals("dx")) {
+			if (key.equals(IC_LABEL_X)) {
 				// should be safe b/c of field validator
 				dx = Double.parseDouble(value);
 			}
-			else if (key.equals("dy")) {
+			else if (key.equals(IC_LABEL_Y)) {
 				// should be safe b/c of field validator
 				dy = Double.parseDouble(value);
 			}
-			else if (key.equals("dz")) {
+			else if (key.equals(IC_LABEL_Z)) {
 				// should be safe b/c of field validator
 				dz = Double.parseDouble(value);
 			}
@@ -128,6 +128,10 @@ public class PendulumScenario extends AbstractScenario {
 	// Variables
 	// ================================
 
+	private static final String IC_LABEL_X = "theta";
+	private static final String IC_LABEL_Y = "phi";
+	private static final String IC_LABEL_Z = "thetaDot";
+	
 	private static final DataPoint OFFSET_DEFAULT = new DataPoint(0.02, 0, 0.02);
 	private final PendulumSystem sys;
 	private RungeKutta4_3D ds1;
@@ -284,9 +288,9 @@ public class PendulumScenario extends AbstractScenario {
 		icSheet = new PropertySheet();
 		icSheet.setFieldWidthHint(PropertySheet.NUMERIC_FIELD_WIDTH_HINT);
 		icSheet.addPropertyChangeListener(new ICListener());
-		icSheet.addProperty("x", String.valueOf(ic.getX()), anyDouble);
-		icSheet.addProperty("y", String.valueOf(ic.getY()), anyDouble);
-		icSheet.addProperty("z", String.valueOf(ic.getZ()), anyDouble);
+		icSheet.addProperty(IC_LABEL_X, String.valueOf(ic.getX()), anyDouble);
+		icSheet.addProperty(IC_LABEL_Y, String.valueOf(ic.getY()), anyDouble);
+		icSheet.addProperty(IC_LABEL_Z, String.valueOf(ic.getZ()), anyDouble);
 
 		Control icSheetControl = icSheet.buildControls(cpane);
 		icSheetControl.setLayoutData(new GridData(SWT.END, SWT.FILL, true, false, nCols,
@@ -316,9 +320,9 @@ public class PendulumScenario extends AbstractScenario {
 		offsetSheet = new PropertySheet();
 		offsetSheet.setFieldWidthHint(PropertySheet.NUMERIC_FIELD_WIDTH_HINT);
 		offsetSheet.addPropertyChangeListener(new OffsetListener());
-		offsetSheet.addProperty("dx", String.valueOf(offset.getX()), anyDouble);
-		offsetSheet.addProperty("dy", String.valueOf(offset.getY()), anyDouble);
-		offsetSheet.addProperty("dz", String.valueOf(offset.getZ()), anyDouble);
+		offsetSheet.addProperty(IC_LABEL_X, String.valueOf(offset.getX()), anyDouble);
+		offsetSheet.addProperty(IC_LABEL_Y, String.valueOf(offset.getY()), anyDouble);
+		offsetSheet.addProperty(IC_LABEL_Z, String.valueOf(offset.getZ()), anyDouble);
 
 		Control offsetSheetControl = offsetSheet.buildControls(cpane);
 		offsetSheetControl.setLayoutData(new GridData(SWT.END, SWT.FILL, true, false,

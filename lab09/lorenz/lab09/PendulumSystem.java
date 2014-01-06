@@ -16,60 +16,58 @@ public class PendulumSystem implements ODESystem_3D {
 		public void takeDerivatives(double t, double[] p, double[] dpdt);
 	}
 
+	/**
+	 * For phiDot = 0, we simplify:
+	 * 
+	 * <pre>
+	 * d(thetaDot)/dt = -g/L * sin(theta)
+	 * d(theta)/dt    = thetaDot
+	 * d(phi)/dt      = 0
+	 * </pre>
+	 * 
+	 * which for <code>p = {theta, phi, thetaDot}</code> gives:
+	 * 
+	 * <pre>
+	 * dpdt[0] = p[2];
+	 * dpdt[1] = 0;
+	 * dpdt[2] = -g/L * sin(p[0]);
+	 * </pre>
+	 */
 	private class PlanarCase implements InnerODE {
 
 		@Override
 		public void takeDerivatives(double t, double[] p, double[] dpdt) {
-			// For phiDot = 0, we simplify:
-			// d(theta)/dt = thetaDot
-			// d(thetaDot)/dt = -g/L sin(theta)
-			// --------------------------------
-			// p[0] = theta => dx/dt = z;
-			// p[1] = phi => dydt = 0;
-			// p[2] = thetaDot => dzdt = -g/L sin(x)
-
 			dpdt[0] = p[2];
 			dpdt[1] = 0;
 			dpdt[2] = minusGOverR * Math.sin(p[0]);
 		}
 	}
 
+	/**
+	 * For phiDot != 0, we have:
+	 * <pre>
+	 * d(thetaDot)/dt = sin(theta) * cos(theta) * (phiDot)^2 - g/L * sin(theta)
+	 * d(theta)/dt = thetaDot
+	 * d(phi)/dt = phiDot
+	 * where:
+	 * m*L^2 * (sin(theta))^2 * phiDot = const.
+	 * </pre>
+	 */
 	private class GeneralCase implements InnerODE {
 
 		@Override
 		public void takeDerivatives(double t, double[] p, double[] dpdt) {
-			// d^2(theta)/dt^2 = sin(theta) * cos(theta) * (d(phi)/dt)^2 - g/L *
-			// sin(theta)
-			//
-			// * m*L^2*sin(theta^2) * d(phi)/dt = const
-			// *
-			// * theta
-			// * thetaDot
-			// * phi
-			// * phiDot
-			// *
-			// * d(theta)/dt = thetaDot
-			// * d(thetaDot)/dt = sin(theta)*cos(theta)*phiDot^2 -
-// g/L*sin(theta)
-			// from
-			// m * L^2 * (sin(theta))^2 * phiDot = const
-			// we get:
-			// phiDot = gamma / (sin(theta))^2
-			// so therefore
-			// d(thetaDot)/dt = sin(theta)*cos(theta)*(gamma/(sin(theta))^2)^2
-
-			// * d(phiDot)/dt = 0
-			// *
-			// * FOr phiDot = 0, we simplify:
-			// *
-			// * d(theta)/dt = thetaDot
-			// * d(thetaDot)/dt = -g/L sin(theta)
-			// *
-			// *
-			// * 1. \ddot\theta =
-			// \sin\theta\cos\theta\dot{\phi}^2-\frac{g}{L}\sin\theta
-			// *
-			// * 2. m L^2 \sin\theta^2 \dot{\phi} = const
+			
+			// p[0] = theta
+			// p[1] = phi
+			// p[2] = thetaDot
+			
+			final double sinTheta = Math.sin(p[0]);
+			final double rSinTheta = r * Math.sin(p[0]);
+			final double phiDot = lambda/(rSinTheta * rSinTheta);
+			dpdt[0] = p[2];
+			dpdt[1] = phiDot;
+			dpdt[2] = sinTheta * Math.cos(p[0]) * phiDot * phiDot + minusGOverR * sinTheta;
 		}
 
 	}
@@ -86,7 +84,7 @@ public class PendulumSystem implements ODESystem_3D {
 
 	private double r; // length of pendumum's arm
 	private double g; // gravitational acceleration
-	private double lambda; // proportional to angular momentum; if 0, motion is planar
+	private double lambda; // proportional to angular momentum
 
 	private InnerODE innerODE;
 	private double minusGOverR;
