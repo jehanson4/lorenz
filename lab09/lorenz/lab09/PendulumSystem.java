@@ -20,7 +20,7 @@ public class PendulumSystem implements ODESystem_3D {
 	 * For phiDot = 0, we simplify:
 	 * 
 	 * <pre>
-	 * d(thetaDot)/dt = -g/L * sin(theta)
+	 * d(thetaDot)/dt = -g/r * sin(theta)
 	 * d(theta)/dt    = thetaDot
 	 * d(phi)/dt      = 0
 	 * </pre>
@@ -30,7 +30,7 @@ public class PendulumSystem implements ODESystem_3D {
 	 * <pre>
 	 * dpdt[0] = p[2];
 	 * dpdt[1] = 0;
-	 * dpdt[2] = -g/L * sin(p[0]);
+	 * dpdt[2] = -g/r * sin(p[0]);
 	 * </pre>
 	 */
 	private class PlanarCase implements InnerODE {
@@ -46,11 +46,11 @@ public class PendulumSystem implements ODESystem_3D {
 	/**
 	 * For phiDot != 0, we have:
 	 * <pre>
-	 * d(thetaDot)/dt = sin(theta) * cos(theta) * (phiDot)^2 - g/L * sin(theta)
+	 * d(thetaDot)/dt = sin(theta) * cos(theta) * (phiDot)^2 - g/r * sin(theta)
 	 * d(theta)/dt = thetaDot
 	 * d(phi)/dt = phiDot
 	 * where:
-	 * m*L^2 * (sin(theta))^2 * phiDot = const.
+	 * m * r^2 * (sin(theta))^2 * phiDot = const.
 	 * </pre>
 	 */
 	private class GeneralCase implements InnerODE {
@@ -63,7 +63,7 @@ public class PendulumSystem implements ODESystem_3D {
 			// p[2] = thetaDot
 			
 			final double sinTheta = Math.sin(p[0]);
-			final double rSinTheta = r * Math.sin(p[0]);
+			final double rSinTheta = r * sinTheta;
 			final double phiDot = lambda/(rSinTheta * rSinTheta);
 			dpdt[0] = p[2];
 			dpdt[1] = phiDot;
@@ -82,7 +82,7 @@ public class PendulumSystem implements ODESystem_3D {
 
 	private static final DataPoint DEFAULT_IC = new DataPoint(7. * Math.PI / 8., 0, 0);
 
-	private double r; // length of pendumum's arm
+	private double r; // length of pendulum's arm
 	private double g; // gravitational acceleration
 	private double lambda; // proportional to angular momentum
 
@@ -106,8 +106,8 @@ public class PendulumSystem implements ODESystem_3D {
 	public DataBox getDataBoundsHint() {
 		// x = theta => [0, PI]
 		// y = phi => [0, 2*PI]
-		// z = thetaDot => [-10, 10] ?
-		// plus some margin . . . just guessing here . . .
+		// z = thetaDot => [-10, 10] ? . . . just guessing here . . .
+		// plus some margin . . . 
 		DataPoint min = new DataPoint(-3.2, -6.4, -10.1);
 		DataPoint max = new DataPoint(3.2, 6.4, 10.1);
 		return new DataBox(min, max);

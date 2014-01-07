@@ -304,9 +304,9 @@ public class PendulumScenario extends AbstractScenario {
 			public void widgetSelected(SelectionEvent e) {
 				DataPoint ic = getICDefault();
 				setIC(ic);
-				icSheet.setProperty("x", String.valueOf(ic.getX()));
-				icSheet.setProperty("y", String.valueOf(ic.getY()));
-				icSheet.setProperty("z", String.valueOf(ic.getZ()));
+				icSheet.setProperty(IC_LABEL_X, String.valueOf(ic.getX()));
+				icSheet.setProperty(IC_LABEL_Y, String.valueOf(ic.getY()));
+				icSheet.setProperty(IC_LABEL_Z, String.valueOf(ic.getZ()));
 			}
 		});
 

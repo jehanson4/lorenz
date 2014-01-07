@@ -268,11 +268,17 @@ public class PropertySheet {
 	}
 
 	public String getProperty(String key) {
-		return rows.get(key).getValue();
+		Row row = rows.get(key);
+		if (row == null)
+			throw new IllegalArgumentException("Key not found: " + key);
+		return row.getValue();
 	}
 
 	public void setProperty(String key, String value) {
-		rows.get(key).setValue(value);
+		Row row = rows.get(key);
+		if (row == null)
+			throw new IllegalArgumentException("Key not found: " + key);
+		row.setValue(value);
 	}
 
 	public Control buildControls(Composite parent) {
@@ -300,6 +306,9 @@ public class PropertySheet {
 
 	private void addProperty(String key, String value, FieldValidator validator,
 			boolean editable) {
+		if (rows.containsKey(key))
+			throw new IllegalArgumentException("Key already in use: " + key);
+		
 		Row r = new Row(key, value, validator, editable);
 		rows.put(key, r);
 		if (control != null && !control.isDisposed()) {
