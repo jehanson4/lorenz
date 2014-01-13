@@ -1,0 +1,9 @@
+Lorenz Lab Notes -- Lab #10 -- Clean & Polish
+
+This lab does cleanup and polishing or what we've got so far.
+ 
+--Unicode for the Greek symbols.
+
+--Decorate the plot with current time and with a diagram of coordinate axes
+	
+
